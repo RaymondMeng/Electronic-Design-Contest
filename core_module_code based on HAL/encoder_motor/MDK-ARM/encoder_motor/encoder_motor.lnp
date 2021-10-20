@@ -1,0 +1,27 @@
+--cpu Cortex-M3
+"encoder_motor\startup_stm32f103xb.o"
+"encoder_motor\main.o"
+"encoder_motor\gpio.o"
+"encoder_motor\tim.o"
+"encoder_motor\usart.o"
+"encoder_motor\stm32f1xx_it.o"
+"encoder_motor\stm32f1xx_hal_msp.o"
+"encoder_motor\stm32f1xx_hal_gpio_ex.o"
+"encoder_motor\stm32f1xx_hal_tim.o"
+"encoder_motor\stm32f1xx_hal_tim_ex.o"
+"encoder_motor\stm32f1xx_hal.o"
+"encoder_motor\stm32f1xx_hal_rcc.o"
+"encoder_motor\stm32f1xx_hal_rcc_ex.o"
+"encoder_motor\stm32f1xx_hal_gpio.o"
+"encoder_motor\stm32f1xx_hal_dma.o"
+"encoder_motor\stm32f1xx_hal_cortex.o"
+"encoder_motor\stm32f1xx_hal_pwr.o"
+"encoder_motor\stm32f1xx_hal_flash.o"
+"encoder_motor\stm32f1xx_hal_flash_ex.o"
+"encoder_motor\stm32f1xx_hal_exti.o"
+"encoder_motor\stm32f1xx_hal_uart.o"
+"encoder_motor\system_stm32f1xx.o"
+--library_type=microlib --strict --scatter "encoder_motor\encoder_motor.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "encoder_motor.map" -o encoder_motor\encoder_motor.axf

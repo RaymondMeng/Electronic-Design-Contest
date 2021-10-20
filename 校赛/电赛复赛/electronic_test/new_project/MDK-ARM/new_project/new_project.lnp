@@ -1,0 +1,25 @@
+--cpu Cortex-M3
+"new_project\startup_stm32f103x6.o"
+"new_project\main.o"
+"new_project\gpio.o"
+"new_project\tim.o"
+"new_project\stm32f1xx_it.o"
+"new_project\stm32f1xx_hal_msp.o"
+"new_project\stm32f1xx_hal_gpio_ex.o"
+"new_project\stm32f1xx_hal_tim.o"
+"new_project\stm32f1xx_hal_tim_ex.o"
+"new_project\stm32f1xx_hal.o"
+"new_project\stm32f1xx_hal_rcc.o"
+"new_project\stm32f1xx_hal_rcc_ex.o"
+"new_project\stm32f1xx_hal_gpio.o"
+"new_project\stm32f1xx_hal_dma.o"
+"new_project\stm32f1xx_hal_cortex.o"
+"new_project\stm32f1xx_hal_pwr.o"
+"new_project\stm32f1xx_hal_flash.o"
+"new_project\stm32f1xx_hal_flash_ex.o"
+"new_project\stm32f1xx_hal_exti.o"
+"new_project\system_stm32f1xx.o"
+--library_type=microlib --strict --scatter "new_project\new_project.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "new_project.map" -o new_project\new_project.axf

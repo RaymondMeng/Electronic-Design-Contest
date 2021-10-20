@@ -1,0 +1,15 @@
+<html>
+<body>
+<pre>
+<h1>礦ision2 Build Log</h1>
+<h2>Project:</h2>
+F:\无线程序资料大全\Kanglai\GY521mpu-6050资料\GY521mpu-6050资料\GY521mpu-6050资料\测试程序\51-coed\MPU-6050-C51参考程序\C51-6050-UART.uv2
+Project File Date:  11/16/2012
+
+<h2>Output:</h2>
+Build target 'Target 1'
+compiling C51-6050-UART.C...
+linking...
+Program Size: data=22.1 xdata=0 code=860
+creating hex file from "C51-6050-UART"...
+"C51-6050-UART" - 0 Error(s), 0 Warning(s).

@@ -1,0 +1,12 @@
+i2c.c:30:6:MX_I2C1_Init	8	static
+i2c.c:49:6:HAL_I2C_MspInit	32	static
+i2c.c:77:6:HAL_I2C_MspDeInit	8	static
+i2c.c:103:5:i2cWrite	24	static
+i2c.c:109:5:i2cRead	24	static
+i2c.c:123:15:I2C_ReadOneByte	32	static
+i2c.c:141:9:IICreadBytes	24	static
+i2c.c:158:9:IICwriteBytes	24	static
+i2c.c:175:9:IICreadByte	8	static
+i2c.c:189:15:IICwriteByte	16	static
+i2c.c:205:9:IICwriteBits	24	static
+i2c.c:231:9:IICwriteBit	32	static

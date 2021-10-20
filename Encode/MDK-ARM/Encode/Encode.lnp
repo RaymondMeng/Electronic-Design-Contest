@@ -1,0 +1,28 @@
+--cpu Cortex-M3
+"encode\startup_stm32f103xb.o"
+"encode\main.o"
+"encode\gpio.o"
+"encode\tim.o"
+"encode\usart.o"
+"encode\stm32f1xx_it.o"
+"encode\stm32f1xx_hal_msp.o"
+"encode\stm32f1xx_hal_gpio_ex.o"
+"encode\stm32f1xx_hal_tim.o"
+"encode\stm32f1xx_hal_tim_ex.o"
+"encode\stm32f1xx_hal.o"
+"encode\stm32f1xx_hal_rcc.o"
+"encode\stm32f1xx_hal_rcc_ex.o"
+"encode\stm32f1xx_hal_gpio.o"
+"encode\stm32f1xx_hal_dma.o"
+"encode\stm32f1xx_hal_cortex.o"
+"encode\stm32f1xx_hal_pwr.o"
+"encode\stm32f1xx_hal_flash.o"
+"encode\stm32f1xx_hal_flash_ex.o"
+"encode\stm32f1xx_hal_exti.o"
+"encode\stm32f1xx_hal_uart.o"
+"encode\system_stm32f1xx.o"
+"encode\motor.o"
+--library_type=microlib --strict --scatter "Encode\Encode.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "Encode.map" -o Encode\Encode.axf

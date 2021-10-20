@@ -1,0 +1,27 @@
+--cpu Cortex-M3
+"control_engine\startup_stm32f103x6.o"
+"control_engine\main.o"
+"control_engine\gpio.o"
+"control_engine\tim.o"
+"control_engine\usart.o"
+"control_engine\stm32f1xx_it.o"
+"control_engine\stm32f1xx_hal_msp.o"
+"control_engine\stm32f1xx_hal_gpio_ex.o"
+"control_engine\stm32f1xx_hal_tim.o"
+"control_engine\stm32f1xx_hal_tim_ex.o"
+"control_engine\stm32f1xx_hal.o"
+"control_engine\stm32f1xx_hal_rcc.o"
+"control_engine\stm32f1xx_hal_rcc_ex.o"
+"control_engine\stm32f1xx_hal_gpio.o"
+"control_engine\stm32f1xx_hal_dma.o"
+"control_engine\stm32f1xx_hal_cortex.o"
+"control_engine\stm32f1xx_hal_pwr.o"
+"control_engine\stm32f1xx_hal_flash.o"
+"control_engine\stm32f1xx_hal_flash_ex.o"
+"control_engine\stm32f1xx_hal_exti.o"
+"control_engine\stm32f1xx_hal_uart.o"
+"control_engine\system_stm32f1xx.o"
+--library_type=microlib --strict --scatter "control_engine\control_engine.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "control_engine.map" -o control_engine\control_engine.axf
