@@ -25,12 +25,12 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "motor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+#define dt 0.005 //PID采样频率
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -56,7 +56,26 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+uint16_t current_pulse;
+/**
+  * @brief  串口调试
+  * @retval None
+  */
+#include "stdio.h"
+#define DEBUG
+#ifdef DEBUG
+#define DBG(format, ...) fprintf(stdout, "[\tDBG](File:%s, Func:%s(), Line:%d): " \
+                                , __FILE__, __FUNCTION__, __LINE__);             \
+                         fprintf(stdout, format"\r\n", ##__VA_ARGS__)
+#else
+#define DBG(format, ...)  do {} while (0)
+#endif
 
+int fputc(int ch, FILE *f){
+    uint8_t temp[1] = {ch};
+    HAL_UART_Transmit(&huart1, temp, 1, 2);//huart1 根据配置修改
+    return ch;
+}
 /* USER CODE END 0 */
 
 /**
@@ -93,13 +112,22 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_TIM_Base_Start_IT(&htim3); //定时采样
+  HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1); //PWM开启
+  HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);  //编码器模式开启
+  
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
+  __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, 2400); //50%PWM
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+     HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_4);
+     HAL_Delay(2000);
+     DBG("%d\r\n", current_pulse);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -152,7 +180,28 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)  //5ms进一次中断
+{
+  if(htim->Instance == htim3.Instance)
+  {
+      current_pulse = (uint32_t)(__HAL_TIM_GET_COUNTER(&htim1)); //读取编 码器数值  采样频率200Hz
+      __HAL_TIM_SET_COUNTER(&htim1, 0); //把这个数值清零从新计数
+    
+      /*角度PID*/
+      angle_pid.error    = angle_pid.measured_value - angle_pid.set_value;
+      angle_pid.integral = angle_pid.error * dt + angle_pid.integral;
+      angle_pid.derival  = (angle_pid.error - angle_pid.passive_error) / dt;
+      angle_pid.output   = current_pulse + angle_pid.kp*angle_pid.error +\
+      angle_pid.ki*angle_pid.integral + angle_pid.kd*angle_pid.derival;
+      
+      /*速度PID*/
+      speed_pid.error    = speed_pid.measured_value - speed_pid.set_value;
+      speed_pid.integral = speed_pid.error * dt + speed_pid.integral;
+      speed_pid.derival  = (speed_pid.error - speed_pid.passive_error) / dt;
+      speed_pid.output   = current_pulse + speed_pid.kp*speed_pid.error +\
+      speed_pid.ki*speed_pid.integral + speed_pid.kd*speed_pid.derival;
+  }
+}
 /* USER CODE END 4 */
 
 /**

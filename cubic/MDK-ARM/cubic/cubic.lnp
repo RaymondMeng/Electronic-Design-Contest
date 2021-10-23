@@ -23,6 +23,7 @@
 "cubic\stm32f4xx_hal_exti.o"
 "cubic\stm32f4xx_hal_uart.o"
 "cubic\system_stm32f4xx.o"
+"cubic\motor.o"
 --library_type=microlib --strict --scatter "cubic\cubic.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
