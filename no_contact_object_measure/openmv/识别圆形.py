@@ -10,9 +10,7 @@ from pyb import UART,Timer
 
 uart = UART(3,921600)#初始化串口 波特率 115200
 
-#LED(1).on()
-#LED(2).on()
-#LED(3).on()
+
 sensor.reset()
 #sensor.set_vflip(True)
 #sensor.set_hmirror(True)
