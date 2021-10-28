@@ -2,6 +2,14 @@ import cv2 as cv
 import numpy as np
 from numpy.core.fromnumeric import shape
 import serial
+# import visdom
+
+# vis = visdom.Visdom()
+
+
+uart0 = serial.Serial("/dev/ttyUSB0",115200)
+
+
 
 lower_red_1 = np.array([0, 100, 20]) #先找出HSV色彩空间红绿蓝三种颜色的大致范围。红色有两个是因为hsv空间中，色相h最上面和最下面都是红色。可以看下面这张图你就懂了。
 upper_red_1 = np.array([10, 255, 255])
@@ -55,10 +63,11 @@ class ShapeAnalysis:
                 c_H = int(p) >> 8
                 c_L = int(p) & 0xff
                 pack_data = bytearray([0xff,x,y,c_H,c_L,int(i),0xfe])
-                
+                uart0.write(pack_data)
                 print(pack_data)
-
-        cv.imshow("Analysis Result", result)
+        # out.write(result)
+        # cv.imshow("Analysis Result", result)
+        # vis.image(result.transpose(2, 0, 1)[::-1, ...],win='camara', opts=dict(title='camara'))
 
     def analysis(self, frame, dilate_iter=3,erode_iter=3):
         result = frame.copy()
@@ -84,7 +93,7 @@ class ShapeAnalysis:
         img_green = cv.erode(img_green,kernel,iterations=erode_iter)
 
 
-        cv.imshow("process",np.hstack([img_red,img_blue,img_green]))
+        # cv.imshow("process",np.hstack([img_red,img_blue,img_green]))
         for i in range(3):
             if(i==0):
                 contours, hierarchy = cv.findContours(img_red, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
@@ -107,7 +116,7 @@ if __name__ == "__main__":
         if not ret:
             cap.release()
         ld.analysis(frame)
-        key = cv.waitKey(20)
+        key = cv.waitKey(1)
         if key == 'c':
             cv.imwrite("%d.jpg"%(count),frame)
             count += 1
