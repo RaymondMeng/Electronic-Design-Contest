@@ -37,7 +37,7 @@ void MX_TIM1_Init(void)
   htim1.Instance = TIM1;
   htim1.Init.Prescaler = 168-1;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1.Init.Period = 20000-1;
+  htim1.Init.Period = 10000;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
@@ -102,7 +102,6 @@ void MX_TIM3_Init(void)
 
 }
 /* TIM9 init function */
-//Ê±ÖÓÆµÂÊ84M
 void MX_TIM9_Init(void)
 {
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
@@ -281,20 +280,20 @@ void Tim_SetPWM(uint8_t tim_port, uint8_t channal_port, uint32_t pulses)
 
 	if(tim_port == 3){
 	  if(channal_port == 1){
-      if(pulses >= 2500)
-        pulses = 2500;
-      else if(pulses <= 500)
-        pulses = 500;      
+      if(pulses >= 2340)
+        pulses = 2340;
+      else if(pulses <= 700)
+        pulses = 700;      
 			__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, pulses);
       current_pulses_x = pulses;
 		}
   }
   if(tim_port == 9){
     if(channal_port == 1){
-      if(pulses >= 2500)
-        pulses = 2500;
-      else if(pulses <= 500)
-        pulses = 500;
+      if(pulses >= 1500)
+        pulses = 1500;
+      else if(pulses <= 700)
+        pulses = 700;
       __HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, pulses);
       current_pulses_y = pulses;
     }

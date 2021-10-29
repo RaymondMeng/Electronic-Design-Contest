@@ -51,7 +51,7 @@ void PID_Init()
   positionx_pid.kd = 0.001;
   positionx_pid.passive_error = 0; //上一次误差量
   positionx_pid.integral = 0; //上一次积分量
-  positionx_pid.set_value = 0x9f; //激光偏心x轴0x01
+  positionx_pid.set_value = 0x7f; //激光偏心x轴0x01
   positionx_pid.output = 1500;
   
   positiony_pid.kp = 0.15;
@@ -59,7 +59,7 @@ void PID_Init()
   positiony_pid.kd = 0;
   positiony_pid.passive_error = 0; //上一次误差量
   positiony_pid.integral = 0; //上一次积分量
-  positiony_pid.set_value = 0x78 - 0x18; //激光偏心y轴0x60
+  positiony_pid.set_value = 0x7f; //激光偏心y轴0x60
   positiony_pid.output = 1500;
 }
 

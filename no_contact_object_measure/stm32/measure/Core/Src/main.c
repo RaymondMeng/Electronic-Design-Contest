@@ -46,9 +46,11 @@
 
 /* USER CODE BEGIN PV */
 uint8_t UART1_RxBuffer;
-uint8_t buffer1[9] = "\0";
+uint8_t buffer1[7] = "\0";
 uint8_t Target_Flag = 0;
-uint8_t Real_x, Real_y, Rx_x, Rx_y;
+uint8_t Real_x, Real_y;
+uint8_t color;
+uint8_t length;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -128,15 +130,15 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    /*
+    
     if(Target_Flag){
       Tim_SetPWM(3, 1, positionx_pid.output); 
       Tim_SetPWM(9, 1, positiony_pid.output);
     } 
-    */
-    HAL_Delay(1000);
-    Tim_SetPWM(3, 1, 2340);
-    Tim_SetPWM(9, 1, 1500);    
+    
+//    HAL_Delay(1000);
+//    Tim_SetPWM(3, 1, 2340);
+//    Tim_SetPWM(9, 1, 1500);    
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -189,10 +191,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-/**
-  * @brief  定时器中断函数
-  * @claim  20ms为周期
-  */
+
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
   static uint8_t count = 0;
@@ -204,34 +203,33 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
         count++;
         buffer1[0] = UART1_RxBuffer;
       }
-      else if(count == 1 && UART1_RxBuffer < 0xff)
-        {
-          buffer1[1] = UART1_RxBuffer;
-          count++;
-        }
-      else if(count == 2 && UART1_RxBuffer <= 0xff)
+      else if(count == 1)
       {
-          buffer1[2] = UART1_RxBuffer;
-          count++;
-        if(UART1_RxBuffer == 0)
-        {
-          Target_Flag = 0; 
-        }
-        else
-        {
-          Target_Flag = 1;
-        }
+        buffer1[1] = UART1_RxBuffer;
+        count++;
       }
-      else if(count == 3 && UART1_RxBuffer < 0xff)
+      else if(count == 2)
+      {
+        buffer1[2] = UART1_RxBuffer;
+        count++;
+//        if(UART1_RxBuffer == 0)
+//        {
+//          Target_Flag = 0; 
+//        }
+//        else
+//        {
+//          Target_Flag = 1;
+//        }
+      }
+      else if(count == 3)
       {
           buffer1[3] = UART1_RxBuffer;
           count++;
       }
-      else if(count == 4 && UART1_RxBuffer <= 0xff)
+      else if(count == 4)
       {
           buffer1[4] = UART1_RxBuffer;
           count++;
-          sum= ((buffer1[1]<<8|buffer1[2])+(buffer1[3]<<8|buffer1[4]))%254;
       }
       else if(count == 5 && UART1_RxBuffer==sum)
       {
@@ -242,12 +240,14 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
       {
           count = 0;
           buffer1[6] = UART1_RxBuffer;
-          Real_x=buffer1[1]<<8|buffer1[2];
-          Real_y=buffer1[3]<<8|buffer1[4];
+          Real_x = buffer1[1];
+          Real_y = buffer1[2];
+          color = buffer1[5];
+          length = buffer1[3]<<8 | buffer1[4];
+          Target_Flag = 1;
           //HAL_UART_Transmit(&huart2, buffer1, 7, HAL_MAX_DELAY);
       }
-      else
-      {
+      else{
          count = 0;
          Target_Flag =0;
       }
@@ -258,16 +258,20 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
    }    
 }
 
+/**
+  * @brief  定时器中断函数
+  * @claim  10ms为周期
+  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-
+   //频率100Hz
   //DBG("have received successfully!\r\n");
   //DBG("have received successfully!\r\n");
 //  uint32_t output_temp;
   if (htim->Instance == htim1.Instance){
     positionx_pid.measured_value =  Real_x;
     positionx_pid.error          =  positionx_pid.measured_value - positionx_pid.set_value;
-    positionx_pid.integral       =  positionx_pid.integral + positionx_pid.error * 0.02; //dt为采样频率
-    positionx_pid.derival        =  (positionx_pid.error - positionx_pid.passive_error) / 0.02; //dt为采样频率（用定时器中断）
+    positionx_pid.integral       =  positionx_pid.integral + positionx_pid.error * 0.01; //dt为采样频率
+    positionx_pid.derival        =  (positionx_pid.error - positionx_pid.passive_error) / 0.01; //dt为采样频率（用定时器中断）
     positionx_pid.output         =  current_pulses_x - (positionx_pid.kp * positionx_pid.error + positionx_pid.ki * positionx_pid.integral + positionx_pid.kd * positionx_pid.derival);
 
     //    positionx_pid.output         =  output_temp > 1500 ? 1500 : output_temp;
@@ -276,9 +280,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     //DBG("have received successfully!\r\n"); 
     positiony_pid.measured_value =  Real_y;
     positiony_pid.error          =  positiony_pid.measured_value - positiony_pid.set_value;
-    positiony_pid.integral       =  positiony_pid.integral + positiony_pid.error * 0.02; //dt为采样频率
-    positiony_pid.derival        =  (positiony_pid.error - positiony_pid.passive_error) / 0.02; //dt为采样频率（用定时器中断）
-    positiony_pid.output         =  current_pulses_y + (positiony_pid.kp * positiony_pid.error + positiony_pid.ki * positiony_pid.integral + positiony_pid.kd * positiony_pid.derival) ;
+    positiony_pid.integral       =  positiony_pid.integral + positiony_pid.error * 0.01; //dt为采样频率
+    positiony_pid.derival        =  (positiony_pid.error - positiony_pid.passive_error) / 0.01; //dt为采样频率（用定时器中断）
+    positiony_pid.output         =  current_pulses_y - (positiony_pid.kp * positiony_pid.error + positiony_pid.ki * positiony_pid.integral + positiony_pid.kd * positiony_pid.derival) ;
 
     //    positionx_pid.output         =  output_temp > 1500 ? 1500 : output_temp;
 //    positionx_pid.output         =  output_temp <  500 ?  500 : output_temp;
