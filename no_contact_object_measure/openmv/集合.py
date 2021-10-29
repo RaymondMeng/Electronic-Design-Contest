@@ -3,14 +3,11 @@ import sensor, image, time
 from pyb import LED
 from pyb import UART,Timer
 
-#import car
-#from pid import PID
-#rho_pid = PID(p=0.4, i=0)
-#theta_pid = PID(p=0.001, i=0)
-
 uart = UART(3,921600)#初始化串口 波特率 115200
 
-
+#LED(1).on()
+#LED(2).on()
+#LED(3).on()
 sensor.reset()
 #sensor.set_vflip(True)
 #sensor.set_hmirror(True)
@@ -226,14 +223,14 @@ def uart_read_buf():
         i = i + 1
 #点检测函数
 def check_dot(img):
-    for blob in img.find_blobs([thresholds], pixels_threshold=3, area_threshold=3, merge=True, margin=5):
+    for blob in img.find_blobs([thresholds], pixels_threshold=50, area_threshold=10, merge=True, margin=5):
         if dot.pixels<blob.pixels():#寻找最大的黑点
             dot.pixels=blob.pixels()
             dot.x = blob.cx()
             dot.y = blob.cy()
             dot.ok= 1
             img.draw_cross(dot.x, dot.y, color=127, size = 10)
-            img.draw_circle(dot.x, dot.y, 5, color = 127)
+            #img.draw_circle(dot.x, dot.y, 5, color = 127)
 
     #判断标志位 赋值像素点数据
     dot.flag = dot.ok
@@ -248,7 +245,6 @@ def check_dot(img):
         uart.write(pack_dot_data())
         #timer_update_flag=0
 
-#找边界
 def fine_border(img,area,area_roi):
 
     line = img.get_regression([(255,255)],roi=area_roi, robust = True)
@@ -274,7 +270,7 @@ def found_line(img):
         img.draw_line(singleline_check.flager.line(), color = 127)
         #print(singleline_check.theta_err)
 
-#线检测
+
 def check_line(img):
     fine_border(img,up,up_roi)
     fine_border(img,down,down_roi)
@@ -315,7 +311,7 @@ while(True):
     #img = sensor.snapshot().binary([THRESHOLD])
     #img = sensor.snapshot()
 
-    if (ctr.work_mode&0x01)!=0:
+    if (ctr.work_mode&0x01)!=0: #点检测
         img = sensor.snapshot().lens_corr(1.8)
         check_dot(img)
         #LED(1).on()           #亮灯
@@ -323,16 +319,32 @@ while(True):
         #LED(1).off()
         #time.sleep(10)     #延时150ms
 
-    #线检测
+    #矩形检测
     if (ctr.work_mode&0x02)!=0:
         img = sensor.snapshot()
-        for c in img.find_circles(threshold = 7800, x_margin = 10, y_margin = 10, r_margin = 10,r_min = 2, r_max = 100, r_step = 2):
-            print(c.x())
-            img.draw_cross(int(c.x()), int(c.y()), color = (255, 255, 255), size = 10, thickness = 2)
+        for r in img.find_rects(threshold = 10000):
+            print(r.x())
+            img.draw_cross(int(r.x()+1/2*r.w()), int(r.y()+1/2*r.h()), color = (255, 255, 255), size = 10, thickness = 2)
             #check_line(img)
         #LED(3).on()        #亮灯
         #time.sleep(10)     #延时150ms
         #LED(3).off()
+
+    #圆检测
+    if (ctr.work_mode&0x03)!=0:
+        img = sensor.snapshot()
+        for c in img.find_circles(threshold = 3500, x_margin = 10, y_margin = 10, r_margin = 10,r_min = 2, r_max = 100, r_step = 2):
+            img.draw_cross(c.x(), c.y(), color = (255, 0, 0))
+
+    #三角形检测
+    if (ctr.work_mode&0x04)!=0:
+        img = sensor.snapshot()
+        for l in img.find_line_segments(merge_distance = 0, max_theta_diff = 15):
+            img.draw_line(l.line(), color = (255, 0, 0))
+            deta = l.theta()
+
+
+
 
     #接收串口数据
     uart_read_buf()
