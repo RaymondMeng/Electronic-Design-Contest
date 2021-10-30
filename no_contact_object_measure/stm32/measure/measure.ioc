@@ -43,6 +43,7 @@ NVIC.PriorityGroup=NVIC_PRIORITYGROUP_2
 NVIC.SVCall_IRQn=true\:0\:0\:false\:false\:true\:false\:false
 NVIC.SysTick_IRQn=true\:0\:0\:false\:false\:true\:false\:true
 NVIC.TIM1_UP_TIM10_IRQn=true\:1\:0\:true\:false\:true\:true\:true
+NVIC.USART1_IRQn=true\:1\:1\:true\:false\:true\:true\:true
 NVIC.UsageFault_IRQn=true\:0\:0\:false\:false\:true\:false\:false
 PA10.Mode=Asynchronous
 PA10.Signal=USART1_RX

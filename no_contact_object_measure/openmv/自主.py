@@ -39,16 +39,18 @@ rect_times=0
 circle_times=0
 xy_times=0
 xy_not_times=0
-mode='A'
+
+
+
 
 #测量色块像素数
 class Circle:
     def __init__(self):  #_init_(self),主要给类初始化一些属性，对象创建时自动调用该方法执行
         self.left_pixelsLimit = 3000
         self.right_pixelsLimit = 50000
-        self.left_SolidtyLimit = 0.78
+        self.left_SolidtyLimit = 0.37
         self.right_SolidtyLimit = 0.85
-        self.left_RoundnessLimit = 0.98
+        self.left_RoundnessLimit = 0.30
         self.right_RoundnessLimit = 1
 class Triangle:
     def __init__(self):  #_init_(self),主要给类初始化一些属性，对象创建时自动调用该方法执行
@@ -62,9 +64,9 @@ class Rectangle:
     def __init__(self):  #_init_(self),主要给类初始化一些属性，对象创建时自动调用该方法执行
         self.left_pixelsLimit = 380
         self.right_pixelsLimit = 5323
-        self.left_SolidtyLimit = 0.97
+        self.left_SolidtyLimit = 0.80
         self.right_SolidtyLimit = 1
-        self.left_RoundnessLimit = 0.95
+        self.left_RoundnessLimit = 0.19
         self.right_RoundnessLimit = 1
 
 MyCircle = Circle()
@@ -72,19 +74,19 @@ MyTriangle = Triangle()
 MyRectangle = Rectangle()
 
 #激光阈值
-graylight_thred=(230,255)
+#graylight_thred=(230,255)
 
 #色块阈值  首先测颜色阈值
 #(88,-79,81)
-green_threshold = (5,88,-73,-18,9,59)  #(57,95,-80,-20,-25,32)
+green_threshold = (59, 7, -65, -16, -57, 41)  #(57,95,-80,-20,-25,32)
 red_threshold = (5,91,17,124,-30,70)   #(21,71,56,124,38,114)
 blue_threshold = (5,70,-54,105,-80,-14)   #(20,73,-46,112,-128,-31)
 
-football_threshold = (0,99,-66,118,16,127)
-white_black_football_threshold= (0,27,-127,127,-127,127)
-vollyball_threshold = (0,99,-66,118,25,127)
-vollyball_threshold_blue = (0,80,-20,37,30,70)
-basketball_threshold = (0,99,14,127,7,64)
+#football_threshold = (0,99,-66,118,16,127)
+#white_black_football_threshold= (0,27,-127,127,-127,127)
+#vollyball_threshold = (0,99,-66,118,25,127)
+#vollyball_threshold_blue = (0,80,-20,37,30,70)
+#basketball_threshold = (0,99,14,127,7,64)
 #这里不需要测量激光只需测量画面中心即可
 #获取激光坐标函数
 '''
@@ -120,7 +122,7 @@ def get_shapeANDcolor(srcImg,color_thred):
     pixels=blob.pixels()       #获取像素个数，用来判断大小
     print(pixels)
     #首先用像素限制掉杂点
-    if(pixels >=MyTriangle.left_pixelsLimit):
+    if(pixels >= MyTriangle.left_pixelsLimit):
         Roundness= blob.roundness()#获取连通域圆形度
         Solidty = blob.solidity()  #获取连通域与它最小外接矩形的密度比
         if(fps_cnt%show_fps_set==0):
@@ -130,7 +132,7 @@ def get_shapeANDcolor(srcImg,color_thred):
 
         #条件限制
         if(pixels<=MyTriangle.right_pixelsLimit and Solidty>=MyTriangle.left_SolidtyLimit and Solidty<=MyTriangle.right_SolidtyLimit and Roundness>=MyTriangle.left_RoundnessLimit and Roundness<=MyTriangle.right_RoundnessLimit):
-            srcImg.draw_rectangle(blob[0:4],color = (255, 0, 0)) #用矩形标记出目标颜色区域
+            srcImg.draw_rectangle(blob[0:4],color = (0, 0, 255)) #用矩形标记出目标颜色区域
             srcImg.draw_cross(blob[5], blob[6]) #在目标颜色区域的中心画十字形标记
             center_X=blob.cx()
             center_Y=blob.cy()
@@ -138,8 +140,8 @@ def get_shapeANDcolor(srcImg,color_thred):
             target_length = pixels
             #print("三角形")
         elif(pixels<=MyRectangle.right_pixelsLimit and Solidty>=MyRectangle.left_SolidtyLimit and Solidty<=MyRectangle.right_SolidtyLimit and Roundness>=MyRectangle.left_RoundnessLimit and Roundness<=MyRectangle.right_RoundnessLimit):
-            #srcImg.draw_rectangle(blob[0:4],color = (0, 255, 0)) #用矩形标记出目标颜色区域
-            #srcImg.draw_cross(blob[5], blob[6]) #在目标颜色区域的中心画十字形标记
+            srcImg.draw_rectangle(blob[0:4],color = (0, 255, 0)) #用矩形标记出目标颜色区域
+            srcImg.draw_cross(blob[5], blob[6]) #在目标颜色区域的中心画十字形标记
             center_X=blob.cx()
             center_Y=blob.cy()
             shape = 3
@@ -177,6 +179,7 @@ def get_maxsize_color(srcImg):
    else:
        return blue_threshold
 #获取背景板左右边界函数
+'''
 def get_leftANDrightLINE(srcImg,center_X,center_Y):
     grayimg =srcimg.to_grayscale()
     canny_thred=13
@@ -204,7 +207,7 @@ def get_leftANDrightLINE(srcImg,center_X,center_Y):
         print(right_x)
         print(left_x)
     return (left_x,right_x)
-
+'''
 #防误判函数，目标的尺寸,并且将值限制在30到40之间
 def Prevent_misslength(now_length,last_length):
     global exist_times
@@ -245,6 +248,7 @@ def Prevent_misstarget(point1_X,point1_Y,lastpoint1_X,lastpoint1_Y):
     return point1_X,point1_Y
 
 #白色足球检测函数
+'''
 def detect_whiteANDblack_football(srcimg):
     img_new = srcimg.copy()
     binimg=img_new.binary([white_black_football_threshold])
@@ -286,7 +290,7 @@ def detect_whiteANDblack_football(srcimg):
         mean_Y = Get_Average(listY)
     #srcimg.draw_circle(mean_X,mean_Y,10, color = (255, 0, 0))
     return (mean_X,mean_Y,len(listX))
-
+'''
 #获取平均数
 def Get_Average(list):
    sum = 0
@@ -296,6 +300,7 @@ def Get_Average(list):
     return 0
    return int(sum/len(list))
 #模型为简化后的模型
+'''
 def get_real_length(pixels,distance,color):
    reallength = 0
    if(color==1):
@@ -319,28 +324,19 @@ def get_real_length(pixels,distance,color):
    else:
        reallength=0
    return reallength
+   '''
 #初始化时钟
 clock = time.clock() # Tracks FPS.
+
 uart = UART(3,115200)   #定义串口3变量
 #设置串口
 uart.init(115200, bits=8, parity=None, stop=0) # init with given parameters
 
-uart1=UART(1,38400)
+#我们要传送的数据有:形状、几何中心坐标 以及大小
+def sending_data(shap,cx,cy,leng,color): #发送函数
+    pack_data = bytearray([0xff,shape,int(leng)>>8,int(leng)&0xff,int(cx),int(cy),color,0xfe])
+    return pack_data
 
-#我们要传送的数据有:目标大小、形状、几何中心坐标 以及回车
-def sending_data(length,shape,cx,cy,dis1,dis2,color):    #发送函数
-    global uart
-    data = ustruct.pack("<bbbbbbbbb",
-                   length,
-                   shape,
-                   cx,
-                   cy,
-                   dis1,
-                   dis2,
-                   color,
-                   0x0D,
-                   0x0A)
-    uart.write(data)
 #主要接受的是模式
 def recive_data():   #接收函数
     global uart
@@ -361,17 +357,7 @@ def recive_data():   #接收函数
             mode = tmp_data[length-1]
             #print(mode)
     return mode
-def recive_distance():   #接收函数
-    global uart1
-    global distance
-    if uart1.any():
-        tmp_data = uart1.readline().decode()
-        #print(tmp_data)
-        if len(tmp_data)>=6 and tmp_data[0]=='D' and tmp_data[1]=='=' and tmp_data[2]>='0' and tmp_data[2]<='9'and tmp_data[4]>='0' and tmp_data[4]<='9'and tmp_data[5]>='0' and tmp_data[5]<='9':
-            distance=int(tmp_data[2])+int(tmp_data[4])*0.1+int(tmp_data[5])*0.01
-            #distance=int(distance*100)
-            print(distance)
-    return distance
+
 #图像循环
 while(True):
     clock.tick() # Track elapsed milliseconds between snapshots().
@@ -394,8 +380,8 @@ while(True):
     #黑白足球黑块初始化
     black_nums=0
     color_flag=0        #蓝1 红2 绿3
-    distance = recive_distance()
-    mode = 'C'
+    #distance = recive_distance()
+    mode = 1
     #mode='C'
     real_target_length=0
     #flag_football=0：检测黄色足球 flag_football=1：检测黑白足球
@@ -404,13 +390,15 @@ while(True):
     #mode0是几何物体检测
     #print(mode)
     target_pixels=0
-    if(mode == 'A' or mode == 'B'):
+    if(mode == 1):
         #观察是否有圆
         for c in srcimg.find_circles(threshold = 2700, x_margin = 10, y_margin = 10, r_margin = 10,r_min = 5, r_max = 30, r_step = 2):
+           #后期调整
+
            area = (c.x()-c.r(), c.y()-c.r(), 2*c.r(), 2*c.r())
            #area为识别到的圆的区域，即圆的外接矩形框
            statistics = srcimg.get_statistics(roi=area)#像素颜色统计
-           #print(statistics)
+           print(statistics)
            if(-73<statistics.a_mode()<-18 and 9<statistics.b_mode()<59):
             color_flag = 3
            elif(17<statistics.a_mode()<124 and -30<statistics.b_mode()<70):
@@ -418,22 +406,24 @@ while(True):
            elif(-54<statistics.a_mode()<105 and -80<statistics.b_mode()<-14):
             color_flag = 1
            if 1<=color_flag<=3:
-               #找到最大的圆作为我们的目标圆
+               #找到最大的圆作为我们的目标圆，很重要
                flag = 1
-               if(c.r()>=circle_r):
-                   circle_r = c.r()
-                   circle_x = c.x()
-                   circle_y = c.y()
+
+           if(c.r()>=circle_r):
+               circle_r = c.r()
+               circle_x = c.x()
+               circle_y = c.y()
                    #if(fps_cnt%show_fps_set==0):
                        #print(c)
-           #srcimg.draw_circle(circle_x,circle_y,circle_r, color = (255, 0, 0))
+           srcimg.draw_rectangle((circle_x-circle_r, circle_y-circle_r, 2*circle_r, 2*circle_r), color=(255, 0, 0))
         #为圆
+
         if(flag == 1 ):
            center_X = circle_x
            center_Y = circle_y
            target_pixels = PI*circle_r*circle_r
            shape = 2
-           print("圆")
+           #print("圆")
         #不为圆，进行其他检测
         else:
            #首先确定色块颜色
@@ -444,10 +434,13 @@ while(True):
             color_flag = 1
            elif(color_thred==red_threshold):
             color_flag = 2
-           #print(color_thred)
+           #print(color_flag)
            #color_thred=red_threshold
            #在该色域中寻找特征，然后得到形状和中心坐标
            (shape,center_X,center_Y,target_pixels) = get_shapeANDcolor(srcimg,color_thred)
+        uart.write(sending_data(shape, center_X, center_Y, target_pixels, color_flag))
+        print(sending_data(shape, center_X, center_Y, target_pixels, color_flag))
+    '''
     else:
         #先找篮球
         ball_pixels = 0
@@ -509,9 +502,10 @@ while(True):
                         center_Y = blob.cy()
         #else:
             #print("NONE")
+            '''
 
     #计算尺寸
-    if(mode != 'C'):
+    if(mode == 2):
         real_target_length = get_real_length(target_pixels,distance,color_flag)
         if(shape == 1):
             real_target_length = math.sqrt(real_target_length*2.31)
@@ -532,9 +526,9 @@ while(True):
         #(center_X,center_Y)=Prevent_misstarget(center_X,center_Y,last_center_X,last_center_Y)
         srcimg.draw_cross(center_X, center_Y)
         #srcimg.draw_cross(center_X,center_Y,color = (0, 255, 0))
-        print(shape)
+        #print(shape)
         #print(center_X,center_Y)
         #print(real_target_length)
-        sending_data(int(real_target_length),shape_result,center_X,center_Y,int(distance),int(distance*100%100),color_flag)
+        #sending_data(int(real_target_length),shape_result,center_X,center_Y,int(distance),int(distance*100%100),color_flag)
         last_center_X = center_X
         last_center_Y = center_Y

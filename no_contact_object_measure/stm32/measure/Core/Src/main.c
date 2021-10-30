@@ -46,11 +46,12 @@
 
 /* USER CODE BEGIN PV */
 uint8_t UART1_RxBuffer;
-uint8_t buffer1[7] = "\0";
+uint8_t buffer1[9] = "\0";
 uint8_t Target_Flag = 0;
 uint8_t Real_x, Real_y;
 uint8_t color;
 uint8_t length;
+uint8_t shape;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -61,6 +62,10 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+/**
+  * @brief  串口调试
+  * @retval None
+  */
 /**
   * @brief  串口调试
   * @retval None
@@ -131,10 +136,12 @@ int main(void)
   while (1)
   {
     
-    if(Target_Flag){
-      Tim_SetPWM(3, 1, positionx_pid.output); 
-      Tim_SetPWM(9, 1, positiony_pid.output);
-    } 
+//    if(Target_Flag){
+//      Tim_SetPWM(3, 1, positionx_pid.output); 
+//      Tim_SetPWM(9, 1, positiony_pid.output);
+//    }
+    //DBG("hello!");
+    DBG("shape:%d length:%d color:%d x:%d y:%d", shape, length, color, Real_x, Real_y);
     
 //    HAL_Delay(1000);
 //    Tim_SetPWM(3, 1, 2340);
@@ -195,9 +202,9 @@ void SystemClock_Config(void)
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
   static uint8_t count = 0;
-  static uint32_t sum = 0;
   if(huart -> Instance == USART1) //如果是串口1
   {
+   // DBG("hello!");
       if((count == 0) && (UART1_RxBuffer == 0xff))
       {    
         count++;
@@ -206,20 +213,18 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
       else if(count == 1)
       {
         buffer1[1] = UART1_RxBuffer;
-        count++;
+        if(UART1_RxBuffer == 0) //没有检测到目标
+          Target_Flag = 0; 
+        else
+        {
+          count++;               //有才加1
+          Target_Flag = 1;
+        }
       }
       else if(count == 2)
       {
         buffer1[2] = UART1_RxBuffer;
         count++;
-//        if(UART1_RxBuffer == 0)
-//        {
-//          Target_Flag = 0; 
-//        }
-//        else
-//        {
-//          Target_Flag = 1;
-//        }
       }
       else if(count == 3)
       {
@@ -231,20 +236,26 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
           buffer1[4] = UART1_RxBuffer;
           count++;
       }
-      else if(count == 5 && UART1_RxBuffer==sum)
+      else if(count == 5)
       {
           buffer1[5] = UART1_RxBuffer;
           count++;
       }
-      else if((count == 6) && (UART1_RxBuffer == 0xfe))
+      else if(count == 6)
+      {
+          buffer1[6] = UART1_RxBuffer;
+          count++;
+      }
+      else if((count == 7) && (UART1_RxBuffer == 0xfe))
       {
           count = 0;
-          buffer1[6] = UART1_RxBuffer;
-          Real_x = buffer1[1];
-          Real_y = buffer1[2];
-          color = buffer1[5];
-          length = buffer1[3]<<8 | buffer1[4];
+          buffer1[7] = UART1_RxBuffer;
+          Real_x = buffer1[2];
+          Real_y = buffer1[3];
+          color = buffer1[6];
+          length = buffer1[4]<<8 | buffer1[5]; //物体边长的像素长度
           Target_Flag = 1;
+          shape = buffer1[1];
           //HAL_UART_Transmit(&huart2, buffer1, 7, HAL_MAX_DELAY);
       }
       else{
