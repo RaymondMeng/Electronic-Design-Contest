@@ -32,3 +32,5 @@ luna\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 luna\main.o: ../Core/Inc/usart.h
 luna\main.o: ../Core/Inc/gpio.h
 luna\main.o: C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\Bin\..\include\stdio.h
+luna\main.o: C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\Bin\..\include\stdarg.h
+luna\main.o: C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\Bin\..\include\string.h

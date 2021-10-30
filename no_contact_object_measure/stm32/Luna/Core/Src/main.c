@@ -58,26 +58,29 @@ void SystemClock_Config(void);
 uint8_t UART1_RxBuffer;
 uint8_t buffer1[10] = "\0";
 uint16_t dist;
-
+uint8_t end[3]= {0xff,0xff,0xff};
 /**
-  * @brief  串口调试
+  * @brief  串口发送函数
   * @retval None
   */
 #include "stdio.h"
-#define DEBUG
-#ifdef DEBUG
-#define DBG(format, ...) fprintf(stdout, "[\tDBG](File:%s, Func:%s(), Line:%d): " \
-                                , __FILE__, __FUNCTION__, __LINE__);             \
-                         fprintf(stdout, format"\r\n", ##__VA_ARGS__)
-#else
-#define DBG(format, ...)  do {} while (0)
-#endif
+#include "stdarg.h"
+#include "string.h"
 
-int fputc(int ch, FILE *f){
-    uint8_t temp[1] = {ch};
-    HAL_UART_Transmit(&huart2, temp, 1, 2);//huart1 根据配置修改
-    return ch;
-}
+#define    TXBUF_SIZE_MAX    100
+
+void uartx_printf(UART_HandleTypeDef huartx, const char *format, ...)
+{
+    va_list args;
+    uint32_t length;
+    uint8_t txbuf[TXBUF_SIZE_MAX] = {0};
+ 
+    va_start(args, format);
+    length = vsnprintf((char *)txbuf, sizeof(txbuf), (char *)format, args);
+    va_end(args);
+    HAL_UART_Transmit(&huartx, (uint8_t *)txbuf, length, HAL_MAX_DELAY);
+    memset(txbuf, 0, TXBUF_SIZE_MAX);
+};
 /* USER CODE END 0 */
 
 /**
@@ -119,7 +122,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    DBG("距离为%d\r\n", dist);
+    //DBG("距离为%d\r\n", dist);
+    uartx_printf(huart2, "t2.txt=\"%d\"", dist);
+    HAL_UART_Transmit(&huart2,end,3,0xffff);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
