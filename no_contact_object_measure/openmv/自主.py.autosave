@@ -63,7 +63,7 @@ class Triangle:
 class Rectangle:
     def __init__(self):  #_init_(self),主要给类初始化一些属性，对象创建时自动调用该方法执行
         self.left_pixelsLimit = 380
-        self.right_pixelsLimit = 5323
+        self.right_pixelsLimit = 10000
         self.left_SolidtyLimit = 0.80
         self.right_SolidtyLimit = 1
         self.left_RoundnessLimit = 0.19
@@ -78,9 +78,9 @@ MyRectangle = Rectangle()
 
 #色块阈值  首先测颜色阈值
 #(88,-79,81)
-green_threshold = (59, 7, -65, -16, -57, 41)  #(57,95,-80,-20,-25,32)
-red_threshold = (5,91,17,124,-30,70)   #(21,71,56,124,38,114)
-blue_threshold = (5,70,-54,105,-80,-14)   #(20,73,-46,112,-128,-31)
+green_threshold = (28, 51, -68, -16, -13, 97)  #(57,95,-80,-20,-25,32)
+red_threshold = (3, 100, -68, 28, -45, 46)   #(21,71,56,124,38,114)
+blue_threshold = (0, 95, -60, 98, -29, 85)   #(20,73,-46,112,-128,-31)
 
 #football_threshold = (0,99,-66,118,16,127)
 #white_black_football_threshold= (0,27,-127,127,-127,127)
@@ -141,7 +141,7 @@ def get_shapeANDcolor(srcImg,color_thred):
             #print("三角形")
         elif(pixels<=MyRectangle.right_pixelsLimit and Solidty>=MyRectangle.left_SolidtyLimit and Solidty<=MyRectangle.right_SolidtyLimit and Roundness>=MyRectangle.left_RoundnessLimit and Roundness<=MyRectangle.right_RoundnessLimit):
             srcImg.draw_rectangle(blob[0:4],color = (0, 255, 0)) #用矩形标记出目标颜色区域
-            srcImg.draw_cross(blob[5], blob[6]) #在目标颜色区域的中心画十字形标记
+            srcImg.draw_cross(blob.cx(), blob.cy()) #在目标颜色区域的中心画十字形标记
             center_X=blob.cx()
             center_Y=blob.cy()
             shape = 3

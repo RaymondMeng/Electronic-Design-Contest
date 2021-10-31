@@ -37,3 +37,5 @@ measure\main.o: ../Core/Inc/gpio.h
 measure\main.o: ..\MYLIB\servo\servo.h
 measure\main.o: C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\Bin\..\include\math.h
 measure\main.o: C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\Bin\..\include\stdio.h
+measure\main.o: C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\Bin\..\include\stdarg.h
+measure\main.o: C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\Bin\..\include\string.h

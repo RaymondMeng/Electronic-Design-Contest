@@ -45,13 +45,15 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-uint8_t UART1_RxBuffer;
-uint8_t buffer1[9] = "\0";
+uint8_t UART1_RxBuffer, UART2_RxBuffer;
+uint8_t buffer1[9] = "\0", buffer2[10] = "\0";
 uint8_t Target_Flag = 0;
 uint8_t Real_x, Real_y;
 uint8_t color;
 uint8_t length;
 uint8_t shape;
+uint8_t end[3]= {0xff,0xff,0xff};
+uint16_t dist;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -63,28 +65,27 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 /**
-  * @brief  串口调试
-  * @retval None
-  */
-/**
-  * @brief  串口调试
+  * @brief  串口发送函数
   * @retval None
   */
 #include "stdio.h"
-#define DEBUG
-#ifdef DEBUG
-#define DBG(format, ...) fprintf(stdout, "[\tDBG](File:%s, Func:%s(), Line:%d): " \
-                                , __FILE__, __FUNCTION__, __LINE__);             \
-                         fprintf(stdout, format"\r\n", ##__VA_ARGS__)
-#else
-#define DBG(format, ...)  do {} while (0)
-#endif
+#include "stdarg.h"
+#include "string.h"
 
-int fputc(int ch, FILE *f){
-    uint8_t temp[1] = {ch};
-    HAL_UART_Transmit(&huart2, temp, 1, 2);//huart1 根据配置修改
-    return ch;
-}
+#define    TXBUF_SIZE_MAX    100
+
+void uartx_printf(UART_HandleTypeDef huartx, const char *format, ...)
+{
+    va_list args;
+    uint32_t length;
+    uint8_t txbuf[TXBUF_SIZE_MAX] = {0};
+ 
+    va_start(args, format);
+    length = vsnprintf((char *)txbuf, sizeof(txbuf), (char *)format, args);
+    va_end(args);
+    HAL_UART_Transmit(&huartx, (uint8_t *)txbuf, length, HAL_MAX_DELAY);
+    memset(txbuf, 0, TXBUF_SIZE_MAX);
+};
 /* USER CODE END 0 */
 
 /**
@@ -120,11 +121,13 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   MX_TIM1_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim1); //开启定时器中断
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); //开启pwm
   HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_1); //开启pwm
   HAL_UART_Receive_IT(&huart1, (uint8_t*)&UART1_RxBuffer, 1); //开启串口中断
+  HAL_UART_Receive_IT(&huart2, (uint8_t*)&UART2_RxBuffer, 1); //开启串口2中断用于激光测距
   
   PID_Init();
   Servo_Init(); //云台初始化，两自由度均为90°
@@ -141,8 +144,15 @@ int main(void)
 //      Tim_SetPWM(9, 1, positiony_pid.output);
 //    }
     //DBG("hello!");
-    DBG("shape:%d length:%d color:%d x:%d y:%d", shape, length, color, Real_x, Real_y);
-    
+    //DBG("shape:%d length:%d color:%d x:%d y:%d", shape, length, color, Real_x, Real_y);
+      uartx_printf(huart2, "t2.txt=\"%d\"", dist);
+      HAL_UART_Transmit(&huart2,end,3,0xffff);
+      uartx_printf(huart2, "t7.txt=\"%d\"", shape);
+      HAL_UART_Transmit(&huart2,end,3,0xffff);
+      uartx_printf(huart2, "t8.txt=\"%d\"", length);
+      //HAL_UART_Transmit(&huart3,end,3,0xffff);
+      uartx_printf(huart3, "hellworld");
+      
 //    HAL_Delay(1000);
 //    Tim_SetPWM(3, 1, 2340);
 //    Tim_SetPWM(9, 1, 1500);    
@@ -202,12 +212,13 @@ void SystemClock_Config(void)
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
   static uint8_t count = 0;
+  static uint8_t count1 = 0;
   if(huart -> Instance == USART1) //如果是串口1
   {
    // DBG("hello!");
       if((count == 0) && (UART1_RxBuffer == 0xff))
       {    
-        count++;
+        count = 1;
         buffer1[0] = UART1_RxBuffer;
       }
       else if(count == 1)
@@ -217,34 +228,34 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
           Target_Flag = 0; 
         else
         {
-          count++;               //有才加1
+          count = 2;               //有才加1
           Target_Flag = 1;
         }
       }
       else if(count == 2)
       {
         buffer1[2] = UART1_RxBuffer;
-        count++;
+        count = 3;
       }
       else if(count == 3)
       {
           buffer1[3] = UART1_RxBuffer;
-          count++;
+          count = 4;
       }
       else if(count == 4)
       {
           buffer1[4] = UART1_RxBuffer;
-          count++;
+          count = 5;
       }
       else if(count == 5)
       {
           buffer1[5] = UART1_RxBuffer;
-          count++;
+          count = 6;
       }
       else if(count == 6)
       {
           buffer1[6] = UART1_RxBuffer;
-          count++;
+          count = 7;
       }
       else if((count == 7) && (UART1_RxBuffer == 0xfe))
       {
@@ -264,9 +275,63 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
       }
 //        //加个数据处理
      //uartx_printf(huart2, "%x %x %x %x %x\r\n", 0xff, Real_x, Real_y, buffer1[5], 0xfe);
-     HAL_UART_Receive_IT(&huart1, (uint8_t*)&UART1_RxBuffer, 1); //重新开启中断   
-     
-   }    
+     HAL_UART_Receive_IT(&huart1, (uint8_t*)&UART1_RxBuffer, 1); //重新开启中断    
+   } 
+   uartx_printf(huart3, "here");
+  /*串口2中断用于接收激光测距值*/
+   if(huart -> Instance == huart2.Instance)
+   {
+     uartx_printf(huart3, "there");
+     if(count1 == 0 && UART2_RxBuffer == 0x59)
+     {
+       count1 = 1;
+       buffer2[0] = UART2_RxBuffer;
+     }
+     else if(count1 == 1 && UART2_RxBuffer == 0x59)
+     {
+       count1 = 2;
+       buffer2[1] = UART2_RxBuffer;
+     }
+    else if(count1 == 2)
+    {
+       count1 = 3;
+       buffer2[2] = UART2_RxBuffer;
+    }
+    else if(count1 == 3)
+    {
+       count1 = 4;
+       buffer2[3] = UART2_RxBuffer;
+    }
+    else if(count1 == 4)
+    {
+       count1 = 5;
+       buffer2[4] = UART2_RxBuffer;
+    }
+    else if(count1 == 5)
+    {
+       count1 = 6;
+       buffer2[5] = UART2_RxBuffer;
+    }
+    else if(count1 == 6)
+    {
+       count1 = 7;   
+       buffer2[6] = UART2_RxBuffer;
+    }
+    else if(count1 == 7)
+    {
+       count1 = 8;
+       buffer2[7] = UART2_RxBuffer;
+    }
+    else if(count1 == 8)
+    {
+       count1 = 0;
+       buffer2[8] = UART2_RxBuffer;
+       dist = buffer2[3]<<8 | buffer2[2];
+    }
+    else
+       count1 = 0;
+    HAL_UART_Receive_IT(&huart2, (uint8_t*)&UART2_RxBuffer, 1);
+  }
 }
 
 /**

@@ -20,7 +20,7 @@ sensor.run(1)
 clock = time.clock()
 classes = ['unmask','masks']
 #task = kpu.load(0x500000)
-task = kpu.load("/sd/mask2.kmodel")
+task = kpu.load("/sd/mask.kmodel")
 anchor = (0.64, 0.67, 0.93, 0.97, 0.98, 1.06, 1.07, 1.17, 1.17, 1.3)
 a = kpu.init_yolo2(task, 0.5, 0.3, 5, anchor)
 while(True):
@@ -32,14 +32,14 @@ while(True):
         for i in code:
             a=img.draw_rectangle(i.rect())
             a = lcd.display(img)
-        
+
             lcd.draw_string(i.x(), i.y(), classes[i.classid()], color=(255, 0, 0), scale = 2)
             lcd.draw_string(i.x(), i.y()+12, '%.3f'%i.value(), color=(255, 0, 0), scale = 2)
-            
-            dat = i.classid()<<8 | int(i.value) 
+
+            dat = i.classid()<<8 | int(i.value)
     else:
         a = lcd.display(img)
         dat = 0xff
     uart_A.write(dat)
-    
+
 a = kpu.deinit(task)

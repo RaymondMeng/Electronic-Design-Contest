@@ -150,7 +150,7 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)
     __HAL_RCC_TIM1_CLK_ENABLE();
 
     /* TIM1 interrupt Init */
-    HAL_NVIC_SetPriority(TIM1_UP_TIM10_IRQn, 1, 0);
+    HAL_NVIC_SetPriority(TIM1_UP_TIM10_IRQn, 3, 1);
     HAL_NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
   /* USER CODE BEGIN TIM1_MspInit 1 */
 
@@ -290,10 +290,10 @@ void Tim_SetPWM(uint8_t tim_port, uint8_t channal_port, uint32_t pulses)
   }
   if(tim_port == 9){
     if(channal_port == 1){
-      if(pulses >= 1500)
+      if(pulses >= 2340)
+        pulses = 2340;
+      else if(pulses <= 1500)
         pulses = 1500;
-      else if(pulses <= 700)
-        pulses = 700;
       __HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, pulses);
       current_pulses_y = pulses;
     }

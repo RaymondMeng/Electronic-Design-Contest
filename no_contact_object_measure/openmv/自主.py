@@ -78,9 +78,9 @@ MyRectangle = Rectangle()
 
 #色块阈值  首先测颜色阈值
 #(88,-79,81)
-green_threshold = (59, 7, -65, -16, -57, 41)  #(57,95,-80,-20,-25,32)
-red_threshold = (5,91,17,124,-30,70)   #(21,71,56,124,38,114)
-blue_threshold = (5,70,-54,105,-80,-14)   #(20,73,-46,112,-128,-31)
+green_threshold = (57,95,-80,-20,-25,32)  #(57,95,-80,-20,-25,32)
+red_threshold = (3, 100, -68, 28, -45, 46)   #(21,71,56,124,38,114)
+blue_threshold = (0, 95, -60, 98, -29, 85)   #(20,73,-46,112,-128,-31)
 
 #football_threshold = (0,99,-66,118,16,127)
 #white_black_football_threshold= (0,27,-127,127,-127,127)
@@ -334,7 +334,7 @@ uart.init(115200, bits=8, parity=None, stop=0) # init with given parameters
 
 #我们要传送的数据有:形状、几何中心坐标 以及大小
 def sending_data(shap,cx,cy,leng,color): #发送函数
-    pack_data = bytearray([0xff,shape,int(leng)>>8,int(leng)&0xff,int(cx),int(cy),color,0xfe])
+    pack_data = bytearray([0xff,shape,int(cx),int(cy),int(leng)>>8,int(leng)&0xff,color,0xfe])
     return pack_data
 
 #主要接受的是模式
@@ -439,7 +439,7 @@ while(True):
            #在该色域中寻找特征，然后得到形状和中心坐标
            (shape,center_X,center_Y,target_pixels) = get_shapeANDcolor(srcimg,color_thred)
         uart.write(sending_data(shape, center_X, center_Y, target_pixels, color_flag))
-        print(sending_data(shape, center_X, center_Y, target_pixels, color_flag))
+        #print(sending_data(shape, center_X, center_Y, target_pixels, color_flag))
     '''
     else:
         #先找篮球
