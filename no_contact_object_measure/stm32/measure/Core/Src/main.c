@@ -126,7 +126,7 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim1); //开启定时器中断
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); //开启pwm
   HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_1); //开启pwm
-  HAL_UART_Receive_IT(&huart1, (uint8_t*)&UART1_RxBuffer, 1); //开启串口中断
+  HAL_UART_Receive_IT(&huart1, (uint8_t*)&UART1_RxBuffer, 1); //开启串口中断,用于openmv
   HAL_UART_Receive_IT(&huart2, (uint8_t*)&UART2_RxBuffer, 1); //开启串口2中断用于激光测距
   
   PID_Init();
@@ -150,8 +150,8 @@ int main(void)
       uartx_printf(huart2, "t7.txt=\"%d\"", shape);
       HAL_UART_Transmit(&huart2,end,3,0xffff);
       uartx_printf(huart2, "t8.txt=\"%d\"", length);
-      //HAL_UART_Transmit(&huart3,end,3,0xffff);
-      uartx_printf(huart3, "hellworld");
+      HAL_UART_Transmit(&huart2,end,3,0xffff);
+      uartx_printf(huart3, "hellworld\r\n");
       
 //    HAL_Delay(1000);
 //    Tim_SetPWM(3, 1, 2340);
@@ -213,7 +213,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
   static uint8_t count = 0;
   static uint8_t count1 = 0;
-  if(huart -> Instance == USART1) //如果是串口1
+  __HAL_UART_CLEAR_PEFLAG(huart);
+  if(huart -> Instance == huart1.Instance) //如果是串口1
   {
    // DBG("hello!");
       if((count == 0) && (UART1_RxBuffer == 0xff))
@@ -275,13 +276,14 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
       }
 //        //加个数据处理
      //uartx_printf(huart2, "%x %x %x %x %x\r\n", 0xff, Real_x, Real_y, buffer1[5], 0xfe);
-     HAL_UART_Receive_IT(&huart1, (uint8_t*)&UART1_RxBuffer, 1); //重新开启中断    
+      HAL_UART_Receive_IT(&huart1, (uint8_t*)&UART1_RxBuffer, 1); //重新开启中断
    } 
-   uartx_printf(huart3, "here");
+   uartx_printf(huart3, "here\r\n");
+   
   /*串口2中断用于接收激光测距值*/
    if(huart -> Instance == huart2.Instance)
    {
-     uartx_printf(huart3, "there");
+     uartx_printf(huart3, "there\r\n");
      if(count1 == 0 && UART2_RxBuffer == 0x59)
      {
        count1 = 1;
@@ -299,39 +301,15 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     }
     else if(count1 == 3)
     {
-       count1 = 4;
        buffer2[3] = UART2_RxBuffer;
-    }
-    else if(count1 == 4)
-    {
-       count1 = 5;
-       buffer2[4] = UART2_RxBuffer;
-    }
-    else if(count1 == 5)
-    {
-       count1 = 6;
-       buffer2[5] = UART2_RxBuffer;
-    }
-    else if(count1 == 6)
-    {
-       count1 = 7;   
-       buffer2[6] = UART2_RxBuffer;
-    }
-    else if(count1 == 7)
-    {
-       count1 = 8;
-       buffer2[7] = UART2_RxBuffer;
-    }
-    else if(count1 == 8)
-    {
        count1 = 0;
-       buffer2[8] = UART2_RxBuffer;
        dist = buffer2[3]<<8 | buffer2[2];
     }
     else
        count1 = 0;
-    HAL_UART_Receive_IT(&huart2, (uint8_t*)&UART2_RxBuffer, 1);
   }
+  HAL_UART_Receive_IT(&huart1, (uint8_t*)&UART1_RxBuffer, 1); //重新开启中断
+  HAL_UART_Receive_IT(&huart2, (uint8_t*)&UART2_RxBuffer, 1);
 }
 
 /**

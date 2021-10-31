@@ -160,12 +160,12 @@ while (1):
                     print(index)
 
                     score = int(max_score)
-                    pack_data = bytearray([0xf0,num,score,0x0f])
+                    pack_data = bytearray([0xff,num,score,0xfe])
                     uart_A.write(pack_data)
                 else:
                     a = img.draw_string(i.x(), i.y(), ("X :%2.1f" % (
                         max_score)), color=(255, 0, 0), scale=2) #红线
-                    pack_data = bytearray([0xff,0x00,0x00,0xfe])
+                    pack_data = bytearray([0xff,0x00,max_score,0xfe])
                     uart_A.write(pack_data)
                 if start_processing:
                     record_ftr = feature
