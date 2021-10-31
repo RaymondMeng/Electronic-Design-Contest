@@ -189,8 +189,8 @@ while (1):
                 lcd.display(img)
 
                 sc = int(i.value())
-                state = int(i.classid())
-                pack_data = bytearray([0xff,state,sc,0xfe])
+                state_num = int(i.classid())
+                pack_data = bytearray([0xff,state_num,sc,0xfe])
                 uart_A.write(pack_data)
         else:
                 lcd.display(img)
