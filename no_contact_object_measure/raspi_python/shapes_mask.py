@@ -66,7 +66,7 @@ class ShapeAnalysis:
                 uart0.write(pack_data)
                 print(pack_data)
         # out.write(result)
-        # cv.imshow("Analysis Result", result)
+        cv.imshow("Analysis Result", result)
         # vis.image(result.transpose(2, 0, 1)[::-1, ...],win='camara', opts=dict(title='camara'))
 
     def analysis(self, frame, dilate_iter=3,erode_iter=3):
