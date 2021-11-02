@@ -53,10 +53,15 @@ uint8_t len;
 float ObjectTemperature;
 float AmbientTemperature;
 float Emissivity;
+uint8_t Temperature;
 uint8_t UART1_RxBuffer;
+uint8_t UART3_RxBuffer;
 uint8_t buffer1[7] = "\0";
+uint8_t buffer2[7] = "\0";
 uint8_t mode = 0; //默认0:模式0  1：模式1
 uint8_t num, score, state;
+uint8_t end[3]= {0xff,0xff,0xff};
+uint16_t dist;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -122,10 +127,12 @@ int main(void)
   MX_I2C1_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
   MLX90614_Init(&hi2c1);
   MLX90614_SetEmissivity(0.985); // Human skin
   HAL_UART_Receive_IT(&huart1, (uint8_t*)&UART1_RxBuffer, 1); //开启串口中断
+  HAL_UART_Receive_IT(&huart3, (uint8_t*)&UART3_RxBuffer, 1); //开启串口中断
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -136,23 +143,53 @@ int main(void)
     MLX90614_ReadObjectTemperature(&ObjectTemperature);
     MLX90614_GetEmissivity(&Emissivity);
     
-    memset(buf, 0x00, 30); //清空数组
-	  len = sprintf(buf, "Emissivity: %.3f\n\r", Emissivity);   //辐射率
+//    memset(buf, 0x00, 30); //清空数组
+//	  len = sprintf(buf, "Emissivity: %.3f\n\r", Emissivity);   //辐射率
 	  //HAL_UART_Transmit(&huart1, (uint8_t*)buf, len, 20);
 
-	  memset(buf, 0x00, 30);
-	  len = sprintf(buf, "Ambient: %.2f\n\r", AmbientTemperature);    //室温
+//	  memset(buf, 0x00, 30);
+//	  len = sprintf(buf, "Ambient: %.2f\n\r", AmbientTemperature);    //室温
 	  //HAL_UART_Transmit(&huart1, (uint8_t*)buf, len, 20);
 
 	  memset(buf, 0x00, 30);
 	  len = sprintf(buf, "Object: %.2f\n\n\r", ObjectTemperature);    //目标温度
-	  //HAL_UART_Transmit(&huart1, (uint8_t*)buf, len, 20);
-	  HAL_Delay(200);
+	  //HAL_UART_Transmit(&huart2, (uint8_t*)buf, len, 20);
+	  HAL_Delay(50);
     
-    if(!mode)
-    {
-        
+    if(!mode){
+      score = buffer1[2];
+      num = buffer1[1]; //0代表未识别的人 1，2，3分别代表三个人
+      //uartx_printf(huart2, "num: %d  score: %d\r\n", num, score);
+//      uartx_printf(huart2, "")
     }
+    else
+    {
+      state = buffer1[1]; //口罩识别状态
+      score = buffer1[2]; //置信率
+      //uartx_printf(huart2, "state: %d score: %d\r\n", state, score);
+    }
+    uartx_printf(huart2, "n0.val=%d", dist);
+    HAL_UART_Transmit(&huart2,end,3,0xffff);
+    
+    Temperature = (uint8_t)ObjectTemperature;
+    uartx_printf(huart2, "n1.val=%d", Temperature);
+    HAL_UART_Transmit(&huart2,end,3,0xffff);
+    HAL_Delay(20);
+    if(state == 0){
+      uartx_printf(huart2, "t8.txt=\"请您佩戴口罩\"");
+      HAL_UART_Transmit(&huart2,end,3,0xffff);
+    }
+    else if(state && Temperature<37.3)
+    {
+      uartx_printf(huart2, "t8.txt=\"体温正常\"");
+      HAL_UART_Transmit(&huart2,end,3,0xffff);
+    }
+    else if(state && Temperature>=37.3)
+    {
+      uartx_printf(huart2, "t8.txt=\"体温异常\"");
+      HAL_UART_Transmit(&huart2,end,3,0xffff);
+    }
+    HAL_Delay(20);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -208,6 +245,7 @@ void SystemClock_Config(void)
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
    static uint8_t count = 0;
+   static uint8_t count1 = 0;
    if(huart->Instance == huart1.Instance)
    {
      if(count == 0 && UART1_RxBuffer == 0xff)
@@ -234,11 +272,40 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
        count = 0;
      HAL_UART_Receive_IT(&huart1, (uint8_t*)&UART1_RxBuffer, 1);
    }
+   
+   if(huart->Instance == huart3.Instance)
+   {
+      if(count1 == 0 && UART3_RxBuffer == 0x59)
+      {
+       count1++;
+       buffer2[0] = UART3_RxBuffer;
+      }
+      else if(count1 == 1 && UART3_RxBuffer == 0x59)
+      {
+         count1++;
+         buffer2[1] = UART3_RxBuffer;
+      }
+      else if(count1 == 2)
+      {
+         count1++;
+         buffer2[2] = UART3_RxBuffer;
+      }
+      else if(count1 == 3)
+      {
+         buffer2[3] = UART3_RxBuffer;
+         dist = buffer2[3]<<8 | buffer2[2];
+         count1 = 0;
+      }
+      else
+        count1 = 0;
+      HAL_UART_Receive_IT(&huart3, (uint8_t*)&UART3_RxBuffer, 1);
+   }
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
   if(GPIO_Pin == key_Pin) {
       HAL_GPIO_WritePin(mode_GPIO_Port, mode_Pin, GPIO_PIN_SET);
+      //uartx_printf(huart2, "hello_world!\r\n");
       mode = 1;
   }
 }
