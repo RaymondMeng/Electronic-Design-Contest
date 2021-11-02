@@ -54,6 +54,7 @@ mask_gpio = GPIO(GPIO.GPIOHS6, GPIO.IN, GPIO.PULL_DOWN)
 
 
 lcd.init()
+lcd.rotation(2)
 sensor.reset()
 sensor.set_pixformat(sensor.RGB565)
 sensor.set_framesize(sensor.QVGA)
@@ -80,14 +81,6 @@ while (1):
     io_state = mask_gpio.value()
     if io_state == 1 and state == 0:
         state = 1
-        lcd.init()
-        sensor.reset()
-        sensor.set_pixformat(sensor.RGB565)
-        sensor.set_framesize(sensor.VGA)
-        sensor.set_windowing((320, 256))
-        sensor.set_vflip(1)
-        sensor.set_hmirror(1)
-
 
         kpu.deinit(task_fd)
         kpu.deinit(task_ld)
@@ -96,6 +89,15 @@ while (1):
         del task_ld
         del task_fe
         gc.collect()
+
+        lcd.init()
+        lcd.rotation(2)
+        sensor.reset()
+        sensor.set_pixformat(sensor.RGB565)
+        sensor.set_framesize(sensor.VGA)
+        sensor.set_windowing((320, 256))
+        sensor.set_vflip(1)
+        sensor.set_hmirror(1)
 
         task = kpu.load("/sd/mask.kmodel")
         anchor = (0.156250, 0.222548,0.361328, 0.489583,0.781250, 0.983133,1.621094, 1.964286,3.574219, 3.940000)
@@ -165,7 +167,7 @@ while (1):
                 else:
                     a = img.draw_string(i.x(), i.y(), ("X :%2.1f" % (
                         max_score)), color=(255, 0, 0), scale=2) #红线
-                    pack_data = bytearray([0xff,0x00,max_score,0xfe])
+                    pack_data = bytearray([0xff,0x00,int(max_score),0xfe])
                     uart_A.write(pack_data)
                 if start_processing:
                     record_ftr = feature
