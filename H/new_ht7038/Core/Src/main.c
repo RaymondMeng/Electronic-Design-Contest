@@ -50,11 +50,13 @@ uint8_t 	ReceData[3]= {0};
 uint16_t	count = 0;						//计数器
 uint16_t	data  = 0;
 //保存原始电流有效值
+uint32_t origin_dat;
  uint32_t	A_Original_Buf[TEST_BUF_SIZE]={0};	//A相原始电流有效值
  uint32_t	B_Original_Buf[TEST_BUF_SIZE]={0};	//B相原始电流有效值
  uint32_t	C_Original_Buf[TEST_BUF_SIZE]={0};	//C相原始电流有效值
 
 //保存转换后的电流有效值
+ uint16_t convert_dat;
  uint16_t a_changed_buf[TEST_BUF_SIZE] = {0};	//A相转换后的电流值
  uint16_t b_changed_buf[TEST_BUF_SIZE] = {0};	//B相转换后的电流值
  uint16_t c_changed_buf[TEST_BUF_SIZE] = {0};	//C相转换后的电流值
@@ -121,59 +123,56 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    if( count < 20 )
-		{
+    
 			//读取A相电流有效值
-			ReadSpi(R_IARMS&0x7f, APhaseReceBuf);
+			ReadSpi(R_IARMS&0x7f, APhaseReceBuf); //读取电流有效值
 			//读取B相电有效值//R_IBRMS
-			ReadSpi(R_UARMS&0x7f, BPhaseReceBuf);
-			
-			A_Original_Buf[count] = (APhaseReceBuf[0]<<16) | (APhaseReceBuf[1]<<8) | (APhaseReceBuf[2]);
+			//ReadSpi(R_UARMS&0x7f, BPhaseReceBuf);  //读取电压有效值
+			ReadSpi(ACTIVE_Pa&0x7f, BPhaseReceBuf); //读取有功功率
+			//A_Original_Buf[count] = (APhaseReceBuf[0]<<16) | (APhaseReceBuf[1]<<8) | (APhaseReceBuf[2]);
 			//a_changed_buf[count] = (u16) (A_Rece_Buf[count]/8192/RES_VALUE*10);
-			temp = (A_Original_Buf[count]/8192/RES_VALUE*10);
-			a_changed_buf[count] = (uint16_t)temp;
+			//temp = (A_Original_Buf[count]/8192/RES_VALUE*10);
+			//a_changed_buf[count] = (uint16_t)temp;
 
 			temp = 0.0;
 
-			B_Original_Buf[count] = (BPhaseReceBuf[0]<<16) | (BPhaseReceBuf[1]<<8) | (BPhaseReceBuf[2]);
+			origin_dat = (BPhaseReceBuf[0]<<16) | (BPhaseReceBuf[1]<<8) | (BPhaseReceBuf[2]);
 			//b_changed_buf[count] = (u16) (B_Rece_Buf[count]/8192/RES_VALUE*10);
-			temp = (B_Original_Buf[count]/8192/RES_VALUE*10);
-			b_changed_buf[count] = (uint16_t)temp;
-			count++;			
-		}
-		else
-		{
-			printf("A相原始的电流有效值为：\r\n");
-			for(i=0;i<count;i++)
-			{
-				printf(" %2d  ",A_Original_Buf[i]);
-			}
-			printf("\r\n");
-			printf("A相转换后的电流有效值为：\r\n");
-			for(i=0;i<count;i++)
-			{
-				printf(" %d  ",a_changed_buf[i]);
-			}
-			
-			printf("\r\n");
-			
-//			printf("B相原始的电压有效值为：\r\n");
+			temp = (origin_dat/8192/RES_VALUE*10);
+			convert_dat = (uint16_t)temp;
+
+    
+			//printf("A相原始的电流有效值为：\r\n");
 //			for(i=0;i<count;i++)
 //			{
-//				printf(" %2x  ",B_Original_Buf[i]);
+//				printf(" %d  ",A_Original_Buf[0]);
 //			}
 //			printf("\r\n");
-//			printf("B相转换后的电压有效值为：\r\n");
+//			printf("A相转换后的电流有效值为：\r\n");
 //			for(i=0;i<count;i++)
 //			{
-//				printf(" %d  ",b_changed_buf[i]);
+//				printf(" %d  ",a_changed_buf[i]);
 //			}
 			
-			count = 0;
+			printf("\r\n");
+			
+			printf("B相原始的电压有效值为：\r\n");
+			//for(i=0;i<count;i++)
+			//{
+				printf(" %x  ", origin_dat);
+		//	}
+			printf("\r\n");
+			printf("B相转换后的电压有效值为：\r\n");
+			//for(i=0;i<count;i++)
+			//{
+				printf(" %d  ", convert_dat);
+			//}
+			
+			//count = 0;
 			printf("\r\n******************************************************\r\n");
 			printf("\r\n");
-		}
-		HAL_Delay(20);	//20ms读取一次
+		
+		HAL_Delay(10);	//20ms读取一次
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

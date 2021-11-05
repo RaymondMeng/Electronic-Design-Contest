@@ -1,0 +1,127 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.31.0.0
+Copyright (C) 2020 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: xxx xxx, xxxx, LIC=PE7DL-02H95-9UR4U-SMETX-EFB8L-K6IC5
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.31.0.0
+Toolchain Path:  C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 6 (build 750)
+Assembler:       Armasm.exe V5.06 update 6 (build 750)
+Linker/Locator:  ArmLink.exe V5.06 update 6 (build 750)
+Library Manager: ArmAr.exe V5.06 update 6 (build 750)
+Hex Converter:   FromElf.exe V5.06 update 6 (build 750)
+CPU DLL:         SARMCM3.DLL V5.31.0.0
+Dialog DLL:      DCM.DLL V1.17.3.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.7.0
+Dialog DLL:      TCM.DLL V1.46.0.0
+ 
+<h2>Project:</h2>
+C:\Users\Raymond_Meng\Desktop\TI-cup\H\flash\MDK-ARM\flash.uvprojx
+Project File Date:  11/04/2021
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\Bin'
+Build target 'flash'
+compiling main.c...
+../Core/Inc/gpio.h(38): error:  #130: expected a "{"
+  void MX_GPIO_Init(void);
+../Core/Src/main.c(46): warning:  #12-D: parsing restarts here after previous syntax error
+  uint8_t flag=10,a[8]={22,33,44,55,66,77,88}; //即将写入到内存的数据
+../Core/Src/main.c(46): warning:  #174-D: expression has no effect
+  uint8_t flag=10,a[8]={22,33,44,55,66,77,88}; //即将写入到内存的数据
+../Core/Src/main.c(46): warning:  #174-D: expression has no effect
+  uint8_t flag=10,a[8]={22,33,44,55,66,77,88}; //即将写入到内存的数据
+../Core/Src/main.c(46): warning:  #174-D: expression has no effect
+  uint8_t flag=10,a[8]={22,33,44,55,66,77,88}; //即将写入到内存的数据
+../Core/Src/main.c(46): warning:  #174-D: expression has no effect
+  uint8_t flag=10,a[8]={22,33,44,55,66,77,88}; //即将写入到内存的数据
+../Core/Src/main.c(46): warning:  #174-D: expression has no effect
+  uint8_t flag=10,a[8]={22,33,44,55,66,77,88}; //即将写入到内存的数据
+../Core/Src/main.c(46): warning:  #174-D: expression has no effect
+  uint8_t flag=10,a[8]={22,33,44,55,66,77,88}; //即将写入到内存的数据
+../Core/Src/main.c(46): warning:  #174-D: expression has no effect
+  uint8_t flag=10,a[8]={22,33,44,55,66,77,88}; //即将写入到内存的数据
+../Core/Src/main.c(46): error:  #65: expected a ";"
+  uint8_t flag=10,a[8]={22,33,44,55,66,77,88}; //即将写入到内存的数据
+../Core/Src/main.c(46): warning:  #940-D: missing return statement at end of non-void function "writedata_to_flash" 
+  uint8_t flag=10,a[8]={22,33,44,55,66,77,88}; //即将写入到内存的数据
+../Core/Src/main.c(62): warning:  #223-D: function "HAL_UART_Transmit" declared implicitly
+  HAL_UART_Transmit(&huart1, temp, 1, 2);//huart1需要根据你的配置修改
+../Core/Src/main.c(62): error:  #20: identifier "huart1" is undefined
+  HAL_UART_Transmit(&huart1, temp, 1, 2);//huart1需要根据你的配置修改
+../Core/Src/main.c(94): warning:  #223-D: function "MX_GPIO_Init" declared implicitly
+    MX_GPIO_Init();
+../Core/Src/main.c(97): error:  #20: identifier "a" is undefined
+    writedata_to_flash(a, 8,addr);
+../Core/Src/main.c(174): warning:  #68-D: integer conversion resulted in a change of sign
+        return -1;
+../Core/Src/main.c(178): warning:  #940-D: missing return statement at end of non-void function "erase_flash" 
+  }
+../Core/Src/main.c(164): warning:  #177-D: variable "address"  was declared but never referenced
+     uint32_t address,i;
+../Core/Src/main.c(164): warning:  #177-D: variable "i"  was declared but never referenced
+     uint32_t address,i;
+../Core/Src/main.c(180): error:  #247: function "writedata_to_flash"  has already been defined
+  uint8_t writedata_to_flash(uint8_t *data,uint32_t len,uint32_t address)
+../Core/Src/main.c(195): warning:  #68-D: integer conversion resulted in a change of sign
+        return -1;
+../Core/Src/main.c(199): warning:  #940-D: missing return statement at end of non-void function "writedata_to_flash" 
+  }
+../Core/Src/main.c(184): warning:  #177-D: variable "temp"  was declared but never referenced
+    uint32_t i=0,temp;
+../Core/Src/main.c: 18 warnings, 5 errors
+compiling stm32f4xx_it.c...
+../Core/Inc/stm32f4xx_it.h(50): error:  #130: expected a "{"
+  void NMI_Handler(void);
+../Core/Src/stm32f4xx_it.c(71): warning:  #12-D: parsing restarts here after previous syntax error
+  {
+../Core/Src/stm32f4xx_it.c(78): warning:  #940-D: missing return statement at end of non-void function "writedata_to_flash" 
+  }
+../Core/Src/stm32f4xx_it.c: 2 warnings, 1 error
+compiling gpio.c...
+../Core/Inc/gpio.h(38): error:  #130: expected a "{"
+  void MX_GPIO_Init(void);
+../Core/Src/gpio.c(41): warning:  #12-D: parsing restarts here after previous syntax error
+  {
+../Core/Src/gpio.c(46): warning:  #940-D: missing return statement at end of non-void function "writedata_to_flash" 
+  }
+../Core/Src/gpio.c: 2 warnings, 1 error
+compiling stm32f4xx_hal_msp.c...
+../Core/Src/stm32f4xx_hal_msp.c(64): error:  #130: expected a "{"
+  void HAL_MspInit(void)
+../Core/Src/stm32f4xx_hal_msp.c(78): warning:  #940-D: missing return statement at end of non-void function "writedata_to_flash" 
+  }
+../Core/Src/stm32f4xx_hal_msp.c: 1 warning, 1 error
+"flash\flash.axf" - 8 Error(s), 23 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.7.0.pack
+                ARM.CMSIS.5.7.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.4.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32F4xx_DFP.2.13.0.pack
+                Keil.STM32F4xx_DFP.2.13.0
+                STMicroelectronics STM32F4 Series Device Support, Drivers and Examples
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\_flash
+  C:\Users\Raymond_Meng\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include
+  C:\Users\Raymond_Meng\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.4.0
+Target not created.
+Build Time Elapsed:  00:00:04
+</pre>
+</body>
+</html>
