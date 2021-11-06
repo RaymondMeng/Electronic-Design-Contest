@@ -1,0 +1,26 @@
+--cpu Cortex-M3
+"jy901_demo\startup_stm32f103xb.o"
+"jy901_demo\main.o"
+"jy901_demo\gpio.o"
+"jy901_demo\usart.o"
+"jy901_demo\stm32f1xx_it.o"
+"jy901_demo\stm32f1xx_hal_msp.o"
+"jy901_demo\stm32f1xx_hal_gpio_ex.o"
+"jy901_demo\stm32f1xx_hal_tim.o"
+"jy901_demo\stm32f1xx_hal_tim_ex.o"
+"jy901_demo\stm32f1xx_hal_uart.o"
+"jy901_demo\stm32f1xx_hal.o"
+"jy901_demo\stm32f1xx_hal_rcc.o"
+"jy901_demo\stm32f1xx_hal_rcc_ex.o"
+"jy901_demo\stm32f1xx_hal_gpio.o"
+"jy901_demo\stm32f1xx_hal_dma.o"
+"jy901_demo\stm32f1xx_hal_cortex.o"
+"jy901_demo\stm32f1xx_hal_pwr.o"
+"jy901_demo\stm32f1xx_hal_flash.o"
+"jy901_demo\stm32f1xx_hal_flash_ex.o"
+"jy901_demo\stm32f1xx_hal_exti.o"
+"jy901_demo\system_stm32f1xx.o"
+--library_type=microlib --strict --scatter "JY901_Demo\JY901_Demo.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "JY901_Demo.map" -o JY901_Demo\JY901_Demo.axf

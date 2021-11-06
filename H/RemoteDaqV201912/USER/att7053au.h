@@ -23,30 +23,31 @@
 
 
 #define SPL_I1		0x00
-#define SPL_I2		0x01
-#define SPL_U		0x02
-#define SPL_P		0x03
-#define SPL_Q		0x04
-#define SPL_S		0x05
-#define RMS_I1		0x06
-#define RMS_I2		0x07
+#define SPL_I2		0x01  //A相有功功率
+#define SPL_U		0x02    //B相有功功率
+#define SPL_P		0x03    //C相有功功率
+#define SPL_Q		0x04    
+#define SPL_S		0x05    //A相无功功率
+#define RMS_I1		0x06  //B相无功功率
+#define RMS_I2		0x07  //C相无功功率
 #define RMS_U		0x08
 #define FREQ_U		0x09
-#define POWERP1		0x0A
-#define POWERQ1		0x0B
+#define POWERP1		0x0A   //B相视在功率
+#define POWERQ1		0x0B   
 #define POWER_S		0x0C
 #define ENERGY_P	0x0D
 #define ENERGY_Q	0x0E
 #define ENERGY_S	0x0F
 #define POWERP2		0x10
-#define POWERQ2		0x11
+#define POWERQ2		0x11  //B相电流有效值
 #define I1ANGLE 	0x12
 #define I2ANGLE		0x13
 #define TEMPDATA	0x14
+#define GONGLYINS 0x15  //B相功率因数
 #define BACKUPDATA	0x16
 #define COMCHECKSUM	0x17
 #define SUMCHECKSUM	0x18
-#define EMUSR		0x19
+#define EMUSR		0x19  //B相电流与电压相角
 #define SYSSTA		0x1A
 #define CHIPID		0x1B
 #define DEVICEID	0x1C

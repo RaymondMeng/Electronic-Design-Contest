@@ -55,6 +55,7 @@ void UART_Init(u32 bound)
  * 输出  ：无
  * 调用  ：由printf调用
  */
+#include <stdarg.h>
 int fputc(int ch, FILE *f)
 {
 	/* 将Printf内容发往串口 */

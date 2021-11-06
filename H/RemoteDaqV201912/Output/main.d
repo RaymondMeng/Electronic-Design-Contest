@@ -16,3 +16,4 @@
 ..\output\main.o: usart1.h
 ..\output\main.o: C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\Bin\..\include\stdio.h
 ..\output\main.o: att7053au.h
+..\output\main.o: bp.h

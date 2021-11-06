@@ -5,6 +5,7 @@
 #include "stm32f10x_adc.h"
 #include "usart1.h"
 #include "att7053au.h"
+#include "bp.h"
 
 #define CALI_FLAG 200
 #define CALI_DATA_ADDR 10
@@ -29,6 +30,7 @@ void WorkControlPin_Init(void);
 
 void Uart5_Init(void);
 void Usart3_Init(void);
+void Usart2_Init(void);
 
 void EEPROM_Init(void);
 void I2C_EE_BufferWrite(unsigned char* pBuffer, unsigned char WriteAddr, unsigned int NumByteToWrite);
@@ -64,6 +66,7 @@ unsigned int eeprom_Addr = 0;
 
 unsigned char currentCaliData[12] = {0};
 unsigned int currentDataBuf[12] = {0};  //存储计量ADC采集的临时数据
+
 unsigned int currentDataVal[12] = {0};  //存储经过校准和转化的电流数据，单位mA
 unsigned char uartCurrentData[15]= {0}; 
 
@@ -90,6 +93,7 @@ unsigned char tempADataFlag = 0;
 unsigned char tempAcommDataBuf[12];
 unsigned char uarttempDataBufA[15];
 unsigned char tempADataTickFlag = 0;
+
 //每隔10S检测一次标志位的状态，若置位表示正常接收到温度数据，若复位表示从机不正常工作
 unsigned char tempTickDetectFlag = 0;
 unsigned int tempTickDetectCnt = 0;
@@ -117,50 +121,38 @@ unsigned char relayAllOffFlag = 0;
 
 unsigned char testSta = 0;
 
+uint8_t BP_in[2], BP_out[1]; 
+
+
+
+
 int main(void)
 { 	
 	unsigned char i = 0;
-
-
-	
-	analogDataMeasFlag  = 1;  //首先关闭压力采样
-	
-	LED_GPIO_Init();
 	WorkControlPin_Init();
 	SlaveDev_Reset_Init();
 	GPIO_ResetBits(GPIOD , GPIO_Pin_3);//--Reset MCU,Wait
 	GPIO_ResetBits(GPIOE , GPIO_Pin_14);//--Reset MCU,Wait
 	
-	Relay_GPIO_Init();
-	RelayStatusDatInit();
-	for(i=0;i<6;i++)
-	{
-		Relay_Work_Mod_Con(i+1,OFF);
-	}
-	for(i=0;i<3;i++)
-	{
-		LED_WorkStaCon(i+1,OFF);
-	}
-	
-	TIM2_Configuration();
-	TIM2_Start();   //初始化定时器并启动
-	UART_Init(9600);
-	Usart3_Init();
-	Uart5_Init();
-	
-	EEPROM_Init(); //初始化EEPROM
+	//TIM2_Configuration();
+	//TIM2_Start();   //初始化定时器并启动
+	UART_Init(115200);
+	//Usart3_Init();
+	//Uart5_Init();
+	Usart2_Init();
 	
 	att7053_GPIO_Init();
 	att7053_Init();
 	//Att7053CH2_GPIO_Init();
 	//Att7053CH2_Init();
 	
-	AnalogDat_Detect_Init();
-	DataBufInit();
-	
 	while(1)
 	{
-
+    //BP开始拟合，取到精确数据
+    simInit();
+//    BP_in[0] = ObjectTemperature;
+//    BP_in[1] = Distance;
+    
 		//--电流数据读取,和数据处理
 		if(CurrentDataCnt < CURRENT_DAT_TIMES)
 		{
@@ -190,9 +182,14 @@ int main(void)
 			//CurrentDataBSetToBuf();
 			//SensorDataSendOverUart(5);
       //USART1_SendData();
-      printf("\r\nff%dfe\r\n", currentDataVal[4]);
+      
+      //printf("\r\nB相有功功率是：%d\r\n", currentDataVal[2]);
+      //printf("\r\nB相无功功率是：%d\r\n", currentDataVal[3]);
+      //printf("\r\nB相视在功率是：%d\r\n", currentDataVal[4]);
+      //printf("\r\nB相功率因数是：%d\r\n", currentDataVal[5]);
+      //printf("\r\nB相电流与电压相角是：%d\r\n", currentDataVal[6]);
 		}
-		else
+		else //清空
 		{
 			CurrentDataCnt = 0;
 			for(i=0;i<12;i++)
@@ -200,8 +197,12 @@ int main(void)
 				currentDataBuf[i] = 0;
 			}
 		}
-    
+    USART_SendData(USART2, currentDataVal[1]);
+    //printf("\r\nB相电流有效值是：%d\r\n", currentDataVal[1]);
+    //printf("\r\nA相电压有效值是：%d\r\n", currentDataVal[0]);
+    //printf("你好");
 		//继电器控制数据
+    
   }
 		
 	
@@ -436,6 +437,46 @@ void Usart3_Init()
 	
 }
 
+void Usart2_Init()
+{
+	GPIO_InitTypeDef GPIO_InitStructure;
+ 	NVIC_InitTypeDef NVIC_InitStructure;
+	USART_InitTypeDef USART_InitStructure;
+	
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2,ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+	
+	USART_DeInit(USART2);
+	
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+  
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
+	
+	NVIC_InitStructure.NVIC_IRQChannel = USART2_IRQn;			
+  	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 3;	
+  	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;			
+  	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;	
+  	NVIC_Init(&NVIC_InitStructure); 
+	
+	USART_InitStructure.USART_BaudRate = 115200;//串口波特率
+	USART_InitStructure.USART_WordLength = USART_WordLength_8b;//字长为8位数据格式
+	USART_InitStructure.USART_StopBits = USART_StopBits_1;//一个停止位
+	USART_InitStructure.USART_Parity = USART_Parity_No;//无奇偶校验位
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;//无硬件数据流控制
+	USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;	//收发模式
+
+	USART_Init(USART2, &USART_InitStructure); //初始化串口2
+	USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);//开启串口接受中断
+	USART_Cmd(USART2, ENABLE);                    //使能串口2 
+	
+}
+
 void Uart5_Init()
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -483,12 +524,18 @@ void CurrentDataReadFun()
 //	currentDataBuf[10] = Att7053CH2_Read(0x11);
 //	currentDataBuf[11] = Att7053CH2_Read(0x10);
 
-	currentDataBuf[0] += att7053_Read(0x0f); //C相电压有效值
-	currentDataBuf[1] += att7053_Read(0x0e); //B相电压有效值
-	currentDataBuf[2] += att7053_Read(0x0d); //A相电压有效值
-	currentDataBuf[3] += att7053_Read(0x12); //C相电流有效值
-	currentDataBuf[4] += att7053_Read(0x11); //B相电流有效值
-	currentDataBuf[5] += att7053_Read(0x10); //A相电流有效值
+	//currentDataBuf[0] += att7053_Read(0x0f); //C相电压有效值
+	//currentDataBuf[0] += att7053_Read(0x0e); //B相电压有效值
+	currentDataBuf[0] += att7053_Read(0x0d); //A相电压有效值
+	//currentDataBuf[1] += att7053_Read(0x12); //C相电流有效值
+	currentDataBuf[1] += att7053_Read(0x11); //B相电流有效值
+	//currentDataBuf[5] += att7053_Read(0x10); //A相电流有效值
+  currentDataBuf[2] += att7053_Read(SPL_U); //B相有功功率
+  currentDataBuf[3] += att7053_Read(RMS_I1); //B相无功功率
+  currentDataBuf[4] += att7053_Read(POWERP1); //B相视在功率
+  currentDataBuf[5] += att7053_Read(GONGLYINS); //B相功率因数
+  currentDataBuf[6] += att7053_Read(EMUSR);  //B相电流与电压相角
+  
   //printf("%d", currentDataBuf[4]);
   //USART_SendData(USART1,currentDataBuf[4]);
 }

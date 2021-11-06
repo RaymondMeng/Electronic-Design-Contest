@@ -4,6 +4,7 @@
 "..\output\stm32f10x_it.o"
 "..\output\usart1.o"
 "..\output\att7053au.o"
+"..\output\bp.o"
 "..\output\stm32f10x_rcc.o"
 "..\output\stm32f10x_gpio.o"
 "..\output\stm32f10x_usart.o"

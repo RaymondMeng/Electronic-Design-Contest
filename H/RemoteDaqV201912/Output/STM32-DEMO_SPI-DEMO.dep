@@ -1,7 +1,7 @@
 Dependencies for Project 'STM32-DEMO', Target 'SPI-DEMO': (DO NOT MODIFY !)
 CompilerVersion: 5060750::V5.06 update 6 (build 750)::.\ARMCC
 F (..\CMSIS\startup\startup_stm32f10x_hd.s)(0x4D783CDF)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1"-IC:\Users\Raymond_Meng\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IC:\Data_Disk\keil5_C51+MDK\MDK\ARM\CMSIS\Include--pd "__UVISION_VERSION SETA 531" --pd "STM32F10X_HD SETA 1"--list ..\listing\startup_stm32f10x_hd.lst --xref -o ..\output\startup_stm32f10x_hd.o --depend ..\output\startup_stm32f10x_hd.d)
-F (.\main.c)(0x61850035)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\CMSIS -I ..\USER -I ..\FWlib\inc -I ..\FWlib\src-IC:\Users\Raymond_Meng\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IC:\Data_Disk\keil5_C51+MDK\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o ..\output\main.o --omf_browse ..\output\main.crf --depend ..\output\main.d)
+F (.\main.c)(0x618582C7)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\CMSIS -I ..\USER -I ..\FWlib\inc -I ..\FWlib\src-IC:\Users\Raymond_Meng\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IC:\Data_Disk\keil5_C51+MDK\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o ..\output\main.o --omf_browse ..\output\main.crf --depend ..\output\main.d)
 I (..\CMSIS\stm32f10x.h)(0x4D783CB5)
 I (..\CMSIS\core_cm3.h)(0x4D523B58)
 I (C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\include\stdint.h)(0x5EC775FC)
@@ -17,7 +17,8 @@ I (..\FWlib\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\FWlib\inc\misc.h)(0x4D783BB4)
 I (usart1.h)(0x5C4EA9B0)
 I (C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\include\stdio.h)(0x5EC775FC)
-I (att7053au.h)(0x6184FEAD)
+I (att7053au.h)(0x618517A2)
+I (bp.h)(0x618527AB)
 F (.\stm32f10x_it.c)(0x5BE3A9ED)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\CMSIS -I ..\USER -I ..\FWlib\inc -I ..\FWlib\src-IC:\Users\Raymond_Meng\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IC:\Data_Disk\keil5_C51+MDK\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o ..\output\stm32f10x_it.o --omf_browse ..\output\stm32f10x_it.crf --depend ..\output\stm32f10x_it.d)
 I (stm32f10x_it.h)(0x4D99A59F)
 I (..\CMSIS\stm32f10x.h)(0x4D783CB5)
@@ -33,7 +34,7 @@ I (..\FWlib\inc\stm32f10x_rcc.h)(0x4D783BB4)
 I (..\FWlib\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\FWlib\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\FWlib\inc\misc.h)(0x4D783BB4)
-F (.\usart1.c)(0x6184FAAE)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\CMSIS -I ..\USER -I ..\FWlib\inc -I ..\FWlib\src-IC:\Users\Raymond_Meng\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IC:\Data_Disk\keil5_C51+MDK\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o ..\output\usart1.o --omf_browse ..\output\usart1.crf --depend ..\output\usart1.d)
+F (.\usart1.c)(0x618543C7)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\CMSIS -I ..\USER -I ..\FWlib\inc -I ..\FWlib\src-IC:\Users\Raymond_Meng\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IC:\Data_Disk\keil5_C51+MDK\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o ..\output\usart1.o --omf_browse ..\output\usart1.crf --depend ..\output\usart1.d)
 I (usart1.h)(0x5C4EA9B0)
 I (..\CMSIS\stm32f10x.h)(0x4D783CB5)
 I (..\CMSIS\core_cm3.h)(0x4D523B58)
@@ -51,7 +52,7 @@ I (..\FWlib\inc\misc.h)(0x4D783BB4)
 I (C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\include\stdio.h)(0x5EC775FC)
 I (C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\include\stdarg.h)(0x5EC775FC)
 F (.\att7053au.c)(0x6184F491)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\CMSIS -I ..\USER -I ..\FWlib\inc -I ..\FWlib\src-IC:\Users\Raymond_Meng\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IC:\Data_Disk\keil5_C51+MDK\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o ..\output\att7053au.o --omf_browse ..\output\att7053au.crf --depend ..\output\att7053au.d)
-I (att7053au.h)(0x6184FEAD)
+I (att7053au.h)(0x618517A2)
 I (..\CMSIS\stm32f10x.h)(0x4D783CB5)
 I (..\CMSIS\core_cm3.h)(0x4D523B58)
 I (C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\include\stdint.h)(0x5EC775FC)
@@ -65,6 +66,12 @@ I (..\FWlib\inc\stm32f10x_rcc.h)(0x4D783BB4)
 I (..\FWlib\inc\stm32f10x_tim.h)(0x4D783BB4)
 I (..\FWlib\inc\stm32f10x_usart.h)(0x4D783BB4)
 I (..\FWlib\inc\misc.h)(0x4D783BB4)
+F (.\bp.c)(0x61852B10)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\CMSIS -I ..\USER -I ..\FWlib\inc -I ..\FWlib\src-IC:\Users\Raymond_Meng\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IC:\Data_Disk\keil5_C51+MDK\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o ..\output\bp.o --omf_browse ..\output\bp.crf --depend ..\output\bp.d)
+I (bp.h)(0x618527AB)
+I (C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\include\stdio.h)(0x5EC775FC)
+I (C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\include\stdlib.h)(0x5EC775FC)
+I (C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\include\math.h)(0x5EC77604)
+I (C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\include\string.h)(0x5EC77604)
 F (..\FWlib\src\stm32f10x_rcc.c)(0x4D783BB4)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\CMSIS -I ..\USER -I ..\FWlib\inc -I ..\FWlib\src-IC:\Users\Raymond_Meng\AppData\Local\Arm\Packs\Keil\STM32F1xx_DFP\2.3.0\Device\Include-IC:\Data_Disk\keil5_C51+MDK\MDK\ARM\CMSIS\Include-D__UVISION_VERSION="531" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o ..\output\stm32f10x_rcc.o --omf_browse ..\output\stm32f10x_rcc.crf --depend ..\output\stm32f10x_rcc.d)
 I (..\FWlib\inc\stm32f10x_rcc.h)(0x4D783BB4)
 I (..\CMSIS\stm32f10x.h)(0x4D783CB5)
