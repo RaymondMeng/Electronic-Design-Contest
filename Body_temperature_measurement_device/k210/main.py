@@ -54,7 +54,7 @@ mask_gpio = GPIO(GPIO.GPIOHS6, GPIO.IN, GPIO.PULL_DOWN)
 
 
 lcd.init()
-lcd.rotation(2)
+#lcd.rotation(2)
 sensor.reset()
 sensor.set_pixformat(sensor.RGB565)
 sensor.set_framesize(sensor.QVGA)
@@ -178,6 +178,7 @@ while (1):
 
         fps = clock.fps()
         #print("%2.1f fps" % fps)
+        img.rotation(2)
         a = lcd.display(img)
         gc.collect()
     elif state == 1:

@@ -1,0 +1,31 @@
+#include "sys.h"
+#include "delay.h"
+#include "led.h"
+#include "spi.h"
+#include "timer.h"
+
+
+//主程序入口
+int main(void)
+{		
+	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);	//设置中断优先级分组为组2：2位抢占优先级，2位响应优先级
+	delay_init();									//嘀嗒定时器初始化
+	LEDx_Init();									//指示灯初始化
+	SPIx_Init();									//SPI接口初始化
+	TIM3_Int_Init(10-1,7200-1);						//定时器3初始化(定时时间	--	1ms)
+	while(1)
+	{
+		
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
