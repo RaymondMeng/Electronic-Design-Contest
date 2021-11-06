@@ -76,8 +76,17 @@ int cnt;
 uint8_t end[3]= {0xff,0xff,0xff};
 uint8_t UART2_RxBuffer;
 uint8_t mode = 0;
+uint8_t mat_cnt = 0;
 
-uint8_t yougong_p, wugong_p;
+uint8_t yougong_p, yougong_sum, yougong_avg, yougong_final, yougong_s;
+
+uint8_t wugong_p, wugong_sum, wugong_avg, wugong_final, wugong_s;
+
+uint8_t youxiao_c, youxiao_sum, youxiao_avg, youxiao_final, youxiao_s;
+
+uint8_t yinshu, yinshu_sum, yinshu_avg, yinshu_final, yinshu_s;
+
+uint8_t xiangjiao, xiangjiao_sum, xiangjiao_avg, xiangjiao_final, xiangjiao_s;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -161,8 +170,11 @@ int main(void)
   while (1)
   {
     //temp = att7053_Read(0x10);
+    int temp1 = 0;
     temp_u32 = 0;
 	  temp_f32 = 0.0;
+    if(!mode)
+    {
     for(cnt=0;cnt<TYPE_NUM;cnt++)
         distance[cnt]=0;
     CurrentDataReadFun();
@@ -212,16 +224,81 @@ int main(void)
       
       uartx_printf(huart2, "n2.val=%d", tx_buf[6]);
       HAL_UART_Transmit(&huart2,end,3,0xffff);
+    }
       
-      if(mode)//学习模式
+      /*学习模式*/
+      if(mode)
       {
           memset(feature_flash, 0x00, sizeof(feature_flash));
           HAL_Delay(100); //等待稳定后开始测量
+          /*数据采样后平滑滤波后平均作为特征值*/
           for(i = 0; i < 10; i++)
           {
+              temp1 = att7053_Read(0x01); //A相有功功率
+              if(temp1 > 8388608) yougong_p = temp1 - 16777216;
+              else yougong_p = temp1;
+              yougong_sum += yougong_p * 10;
+              yougong_sum -= yougong_avg;
+              yougong_avg = yougong_sum * 1.0 / 5;
+              yougong_final = yougong_avg;
+              yougong_p = 0;
+              yougong_s += yougong_final;     
             
+              temp1 = att7053_Read(0x01); //A相无功功率
+              if(temp1 > 8388608) wugong_p = temp1 - 16777216;
+              else wugong_p = temp1;
+              wugong_sum += wugong_p * 10;
+              wugong_sum -= wugong_avg;
+              wugong_avg = wugong_sum * 1.0 / 5;
+              wugong_final = wugong_avg;
+              wugong_p = 0;
+              wugong_s += wugong_final;
+            
+              temp1 = att7053_Read(0x01); //A相电流有效值
+              if(temp1 > 8388608) youxiao_c = temp1 - 16777216;
+              else youxiao_c = temp1;
+              youxiao_sum += youxiao_c * 10;
+              youxiao_sum -= youxiao_avg;
+              youxiao_avg = youxiao_sum * 1.0 / 5;
+              youxiao_final = youxiao_avg;
+              youxiao_c = 0;
+              youxiao_s += youxiao_final;
+              
+              temp1 = att7053_Read(0x01); //A相功率因数
+              if(temp1 > 8388608) yinshu = temp1 - 16777216;
+              else yinshu = temp1;
+              yinshu_sum += yinshu * 10;
+              yinshu_sum -= yinshu_avg;
+              yinshu_avg = yinshu_sum * 1.0 / 5;
+              yinshu_final = yinshu_avg;
+              yinshu = 0;
+              yinshu_s += yinshu_final;
+              
+              temp1 = att7053_Read(0x01); //A相电流与电压相角
+              if(temp1 > 8388608) xiangjiao = temp1 - 16777216;
+              else xiangjiao = temp1;
+              xiangjiao_sum += xiangjiao * 10;
+              xiangjiao_sum -= xiangjiao_avg;
+              xiangjiao_avg = xiangjiao_sum * 1.0 / 5;
+              xiangjiao_final = xiangjiao_avg;
+              xiangjiao = 0;
+              xiangjiao_s += xiangjiao_final;
           }
-          mode = 0;
+          yougong_p = yougong_s / 10;  //将这个值写入表中
+          wugong_p = wugong_s / 10;   //将这个值写入表中
+          xiangjiao = xiangjiao_s / 10;
+          youxiao_c = youxiao_s / 10;
+          yinshu = yinshu / 10;
+          
+          feature_flash[mat_cnt-1][0] = yougong_p;
+          feature_flash[mat_cnt-1][1] = wugong_p;
+          feature_flash[mat_cnt-1][2] = xiangjiao;
+          feature_flash[mat_cnt-1][3] = youxiao_c;
+          feature_flash[mat_cnt-1][4] = yinshu;
+          
+          uartx_printf(huart2, "t8.txt=\"学习完成...\"");
+          HAL_UART_Transmit(&huart2,end,3,0xffff);
+          mode = 0;   
       }
           
     /* USER CODE END WHILE */
@@ -279,7 +356,6 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 void CurrentDataReadFun()
 {
-  int i = 0;
   int temp = 0;
 
   tx_buf[0] = 0xff;
@@ -330,6 +406,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
           uartx_printf(huart2, "t8.txt=\"学习中...\"");
           HAL_UART_Transmit(&huart2,end,3,0xffff);
           mode = 1; //模式切换
+          mat_cnt++;
       }
       HAL_UART_Receive_IT(&huart2, (uint8_t*)&UART2_RxBuffer, 1);      
    }
