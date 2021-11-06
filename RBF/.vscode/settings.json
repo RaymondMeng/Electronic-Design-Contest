@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "iomanip": "cpp",
+        "stdio.h": "c",
+        "limits": "cpp",
+        "core": "cpp",
+        "iostream": "cpp",
+        "cassert": "cpp",
+        "cstdlib": "cpp",
+        "vector": "cpp",
+        "dense": "cpp",
+        "array": "cpp",
+        "*.tcc": "cpp"
+    }
+}

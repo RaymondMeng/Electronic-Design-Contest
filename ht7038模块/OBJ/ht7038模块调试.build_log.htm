@@ -1,0 +1,86 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.20.0.0
+Copyright (C) 2016 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: 12 13, 1232, LIC=YA39U-SQK68-MM89I-TPE6Q-M13V9-U0PGZ
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.20
+Toolchain Path:  e:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 2 (build 183)
+Assembler:       Armasm.exe V5.06 update 2 (build 183)
+Linker/Locator:  ArmLink.exe V5.06 update 2 (build 183)
+Library Manager: ArmAr.exe V5.06 update 2 (build 183)
+Hex Converter:   FromElf.exe V5.06 update 2 (build 183)
+CPU DLL:         SARMCM3.DLL V5.20
+Dialog DLL:      DCM.DLL V1.13.7.0
+Target DLL:      Segger\JL2CM3.dll V2.99.20.0
+Dialog DLL:      TCM.DLL V1.14.9.0
+ 
+<h2>Project:</h2>
+F:\ht7038模块\USER\ht7038模块调试.uvprojx
+Project File Date:  09/01/2018
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 2 (build 183)', folder: 'e:\Keil_v5\ARM\ARMCC\Bin'
+Rebuild target 'ht7038'
+assembling startup_stm32f10x_hd.s...
+compiling core_cm3.c...
+compiling misc.c...
+compiling stm32f10x_dac.c...
+compiling stm32f10x_adc.c...
+compiling stm32f10x_gpio.c...
+compiling stm32f10x_spi.c...
+compiling stm32f10x_rcc.c...
+compiling stm32f10x_tim.c...
+compiling stm32f10x_dma.c...
+compiling stm32f10x_usart.c...
+compiling delay.c...
+compiling usart.c...
+..\SYSTEM\usart\usart.c(497): warning:  #550-D: variable "temp" was set but never used
+  	u16 temp;
+..\SYSTEM\usart\usart.c(53): warning:  #177-D: variable "Tx_CNT" was declared but never referenced
+  static u16 	Tx_CNT = 0; 					//发?统ざ?
+..\SYSTEM\usart\usart.c: 2 warnings, 0 errors
+compiling sys.c...
+compiling main.c...
+..\HARDWARE\SPIx\spi.h(27): warning:  #1-D: last line of file ends without a newline
+  #endif 
+main.c(112): warning:  #111-D: statement is unreachable
+  	return 0;
+main.c(19): warning:  #177-D: variable "C_Original_Buf" was declared but never referenced
+  static u32	C_Original_Buf[TEST_BUF_SIZE]={0};	//C??原始??????效值
+main.c(24): warning:  #177-D: variable "c_changed_buf" was declared but never referenced
+  static u16 c_changed_buf[TEST_BUF_SIZE] = {0};	//C??转换?蟮牡???值
+main.c: 4 warnings, 0 errors
+compiling stm32f10x_it.c...
+compiling spi.c...
+..\HARDWARE\SPIx\spi.h(27): warning:  #1-D: last line of file ends without a newline
+  #endif 
+..\HARDWARE\SPIx\spi.c: 1 warning, 0 errors
+compiling system_stm32f10x.c...
+compiling timer.c...
+..\HARDWARE\SPIx\spi.h(27): warning:  #1-D: last line of file ends without a newline
+  #endif 
+..\HARDWARE\TIMER3\timer.c: 1 warning, 0 errors
+compiling ht7038.c...
+..\HARDWARE\SPIx\spi.h(27): warning:  #1-D: last line of file ends without a newline
+  #endif 
+..\HARDWARE\ht7038\ht7038.c: 1 warning, 0 errors
+compiling led.c...
+linking...
+Program Size: Code=7524 RO-data=376 RW-data=88 ZI-data=2792  
+"..\OBJ\ht7038模块调试.axf" - 0 Error(s), 9 Warning(s).
+
+<h2>Collection of Component include folders:</h2>
+  F:\ht7038模块\USER\RTE
+  e:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.2.0\Device\Include
+
+<h2>Collection of Component Files used:</h2>
+Build Time Elapsed:  00:00:35
+</pre>
+</body>
+</html>
