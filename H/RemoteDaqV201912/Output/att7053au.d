@@ -1,0 +1,16 @@
+..\output\att7053au.o: att7053au.c
+..\output\att7053au.o: att7053au.h
+..\output\att7053au.o: ..\CMSIS\stm32f10x.h
+..\output\att7053au.o: ..\CMSIS\core_cm3.h
+..\output\att7053au.o: C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\att7053au.o: ..\CMSIS\system_stm32f10x.h
+..\output\att7053au.o: ..\USER\stm32f10x_conf.h
+..\output\att7053au.o: ..\FWlib\inc\stm32f10x_adc.h
+..\output\att7053au.o: ..\CMSIS\stm32f10x.h
+..\output\att7053au.o: ..\FWlib\inc\stm32f10x_exti.h
+..\output\att7053au.o: ..\FWlib\inc\stm32f10x_gpio.h
+..\output\att7053au.o: ..\FWlib\inc\stm32f10x_i2c.h
+..\output\att7053au.o: ..\FWlib\inc\stm32f10x_rcc.h
+..\output\att7053au.o: ..\FWlib\inc\stm32f10x_tim.h
+..\output\att7053au.o: ..\FWlib\inc\stm32f10x_usart.h
+..\output\att7053au.o: ..\FWlib\inc\misc.h

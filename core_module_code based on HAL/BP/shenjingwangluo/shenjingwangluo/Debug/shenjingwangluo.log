@@ -1,0 +1,19 @@
+﻿  BPNetwork.c
+C:\Users\hankg\Desktop\shenjingwangluo\shenjingwangluo\BPNetwork.c(26,18): warning C4305: “初始化”: 从“double”到“float”截断
+C:\Users\hankg\Desktop\shenjingwangluo\shenjingwangluo\BPNetwork.c(29,20): warning C4305: “初始化”: 从“double”到“float”截断
+C:\Users\hankg\Desktop\shenjingwangluo\shenjingwangluo\BPNetwork.c(30,20): warning C4305: “初始化”: 从“double”到“float”截断
+C:\Users\hankg\Desktop\shenjingwangluo\shenjingwangluo\BPNetwork.c(31,24): warning C4305: “初始化”: 从“double”到“float”截断
+C:\Users\hankg\Desktop\shenjingwangluo\shenjingwangluo\BPNetwork.c(32,23): warning C4305: “初始化”: 从“double”到“float”截断
+C:\Users\hankg\Desktop\shenjingwangluo\shenjingwangluo\BPNetwork.c(50,31): warning C4305: “函数”: 从“double”到“float”截断
+C:\Users\hankg\Desktop\shenjingwangluo\shenjingwangluo\BPNetwork.c(302,64): warning C4244: “函数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\hankg\Desktop\shenjingwangluo\shenjingwangluo\BPNetwork.c(302,115): warning C4244: “+=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\hankg\Desktop\shenjingwangluo\shenjingwangluo\BPNetwork.c(306,139): warning C4244: “函数”: 从“double”转换到“float”，可能丢失数据
+C:\Users\hankg\Desktop\shenjingwangluo\shenjingwangluo\BPNetwork.c(378,46): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\hankg\Desktop\shenjingwangluo\shenjingwangluo\BPNetwork.c(383,50): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+  main.c
+C:\Users\hankg\Desktop\shenjingwangluo\shenjingwangluo\main.c(11,1): warning C4305: “初始化”: 从“double”到“float”截断
+C:\Users\hankg\Desktop\shenjingwangluo\shenjingwangluo\main.c(16,1): warning C4305: “初始化”: 从“double”到“float”截断
+  test.c
+  正在生成代码...
+C:\Users\hankg\Desktop\shenjingwangluo\shenjingwangluo\BPNetwork.c(439): warning C4716: “savedata”: 必须返回一个值
+  shenjingwangluo.vcxproj -> C:\Users\hankg\Desktop\shenjingwangluo\Debug\shenjingwangluo.exe

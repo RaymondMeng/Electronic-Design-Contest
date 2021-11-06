@@ -81,6 +81,11 @@ while (1):
     io_state = mask_gpio.value()
     if io_state == 1 and state == 0:
         state = 1
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> e6ea875e31731b71cfdbfe7cb254347ff31d0cb9
 
         kpu.deinit(task_fd)
         kpu.deinit(task_ld)
@@ -91,7 +96,10 @@ while (1):
         gc.collect()
 
         lcd.init()
+<<<<<<< HEAD
+=======
         lcd.rotation(2)
+>>>>>>> e6ea875e31731b71cfdbfe7cb254347ff31d0cb9
         sensor.reset()
         sensor.set_pixformat(sensor.RGB565)
         sensor.set_framesize(sensor.VGA)

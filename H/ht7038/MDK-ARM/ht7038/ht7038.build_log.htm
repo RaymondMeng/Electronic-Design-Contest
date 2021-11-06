@@ -1,0 +1,190 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.31.0.0
+Copyright (C) 2020 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: xxx xxx, xxxx, LIC=PE7DL-02H95-9UR4U-SMETX-EFB8L-K6IC5
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.31.0.0
+Toolchain Path:  C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 6 (build 750)
+Assembler:       Armasm.exe V5.06 update 6 (build 750)
+Linker/Locator:  ArmLink.exe V5.06 update 6 (build 750)
+Library Manager: ArmAr.exe V5.06 update 6 (build 750)
+Hex Converter:   FromElf.exe V5.06 update 6 (build 750)
+CPU DLL:         SARMCM3.DLL V5.31.0.0
+Dialog DLL:      DCM.DLL V1.17.3.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.7.0
+Dialog DLL:      TCM.DLL V1.46.0.0
+ 
+<h2>Project:</h2>
+C:\Users\Raymond_Meng\Desktop\TI-cup\H\ht7038\MDK-ARM\ht7038.uvprojx
+Project File Date:  11/04/2021
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Data_Disk\keil5_C51+MDK\MDK\ARM\ARMCC\Bin'
+Build target 'ht7038'
+compiling gpio.c...
+compiling usart.c...
+compiling main.c...
+compiling tim.c...
+compiling stm32f4xx_hal_msp.c...
+compiling stm32f4xx_hal_flash_ramfunc.c...
+compiling stm32f4xx_hal_flash.c...
+compiling stm32f4xx_it.c...
+compiling stm32f4xx_hal_rcc_ex.c...
+compiling spi.c...
+../Core/Inc/spi.h(26): warning:  #1-D: last line of file ends without a newline
+  #endif 
+..\Core\Src\spi.c(6): error:  #20: identifier "SPI_InitTypeDef" is undefined
+      SPI_InitTypeDef		SPI_InitStructure;
+..\Core\Src\spi.c(9): warning:  #223-D: function "RCC_APB2PeriphClockCmd" declared implicitly
+      RCC_APB2PeriphClockCmd( SPI_PIN_SCK_PORT_CLK  |
+..\Core\Src\spi.c(9): error:  #20: identifier "RCC_APB2Periph_GPIOA" is undefined
+      RCC_APB2PeriphClockCmd( SPI_PIN_SCK_PORT_CLK  |
+..\Core\Src\spi.c(12): error:  #20: identifier "RCC_APB2Periph_SPI1" is undefined
+      RCC_APB2PeriphClockCmd( SPI_CLK, ENABLE );					//使能SPI1时钟
+..\Core\Src\spi.c(13): error:  #20: identifier "RCC_APB2Periph_AFIO" is undefined
+  	RCC_APB2PeriphClockCmd( RCC_APB2Periph_AFIO, ENABLE );		//使能辅助功能时钟
+..\Core\Src\spi.c(16): error:  #136: struct "<unnamed>"  has no field "GPIO_Pin"
+  	GPIO_InitStructure.GPIO_Pin 	= SPI_PIN_SCK;				//时钟CLK引脚
+..\Core\Src\spi.c(16): error:  #20: identifier "GPIO_Pin_5" is undefined
+  	GPIO_InitStructure.GPIO_Pin 	= SPI_PIN_SCK;				//时钟CLK引脚
+..\Core\Src\spi.c(17): error:  #136: struct "<unnamed>"  has no field "GPIO_Speed"
+      GPIO_InitStructure.GPIO_Speed 	= GPIO_Speed_50MHz;
+..\Core\Src\spi.c(17): error:  #20: identifier "GPIO_Speed_50MHz" is undefined
+      GPIO_InitStructure.GPIO_Speed 	= GPIO_Speed_50MHz;
+..\Core\Src\spi.c(18): error:  #136: struct "<unnamed>"  has no field "GPIO_Mode"
+      GPIO_InitStructure.GPIO_Mode  	= GPIO_Mode_AF_PP;
+..\Core\Src\spi.c(18): error:  #20: identifier "GPIO_Mode_AF_PP" is undefined
+      GPIO_InitStructure.GPIO_Mode  	= GPIO_Mode_AF_PP;
+..\Core\Src\spi.c(19): warning:  #223-D: function "GPIO_Init" declared implicitly
+      GPIO_Init( SPI_PIN_SCK_PORT, &GPIO_InitStructure );			//根据指定参数初始化
+..\Core\Src\spi.c(21): error:  #136: struct "<unnamed>"  has no field "GPIO_Pin"
+      GPIO_InitStructure.GPIO_Pin 	= SPI_PIN_MOSI;				//MOSI引脚
+..\Core\Src\spi.c(21): error:  #20: identifier "GPIO_Pin_7" is undefined
+      GPIO_InitStructure.GPIO_Pin 	= SPI_PIN_MOSI;				//MOSI引脚
+..\Core\Src\spi.c(24): error:  #136: struct "<unnamed>"  has no field "GPIO_Mode"
+      GPIO_InitStructure.GPIO_Mode 	= GPIO_Mode_IN_FLOATING;  	//MISO引脚
+..\Core\Src\spi.c(24): error:  #20: identifier "GPIO_Mode_IN_FLOATING" is undefined
+      GPIO_InitStructure.GPIO_Mode 	= GPIO_Mode_IN_FLOATING;  	//MISO引脚
+..\Core\Src\spi.c(25): error:  #136: struct "<unnamed>"  has no field "GPIO_Pin"
+      GPIO_InitStructure.GPIO_Pin 	= SPI_PIN_MISO;
+..\Core\Src\spi.c(25): error:  #20: identifier "GPIO_Pin_6" is undefined
+      GPIO_InitStructure.GPIO_Pin 	= SPI_PIN_MISO;
+..\Core\Src\spi.c(29): error:  #20: identifier "SPI_Direction_2Lines_FullDuplex" is undefined
+      SPI_InitStructure.SPI_Direction 		= SPI_Direction_2Lines_FullDuplex;	//全线全双工
+..\Core\Src\spi.c(30): error:  #20: identifier "SPI_Mode_Master" is undefined
+      SPI_InitStructure.SPI_Mode 				= SPI_Mode_Master;					//主机模式
+..\Core\Src\spi.c(31): error:  #20: identifier "SPI_DataSize_8b" is undefined
+      SPI_InitStructure.SPI_DataSize 			= SPI_DataSize_8b;					//数据宽度为8bit
+..\Core\Src\spi.c(32): error:  #20: identifier "SPI_CPOL_Low" is undefined
+      SPI_InitStructure.SPI_CPOL 				= SPI_CPOL_Low;						//时钟空闲状态为L电平
+..\Core\Src\spi.c(33): error:  #20: identifier "SPI_CPHA_2Edge" is undefined
+      SPI_InitStructure.SPI_CPHA 				= SPI_CPHA_2Edge;					//第2个跳变沿开始采样(下降沿采样)
+..\Core\Src\spi.c(34): error:  #20: identifier "SPI_NSS_Soft" is undefined
+      SPI_InitStructure.SPI_NSS 				= SPI_NSS_Soft;						//软件管理NSS
+..\Core\Src\spi.c(35): error:  #20: identifier "SPI_BaudRatePrescaler_8" is undefined
+      SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_8; 			//时钟时速9MHz
+..\Core\Src\spi.c(36): error:  #20: identifier "SPI_FirstBit_MSB" is undefined
+      SPI_InitStructure.SPI_FirstBit			= SPI_FirstBit_MSB;					//从最高位开始传输
+..\Core\Src\spi.c(38): warning:  #223-D: function "SPI_Init" declared implicitly
+      SPI_Init( SPI_INTERFACE, &SPI_InitStructure );								//初始化SPI
+..\Core\Src\spi.c(40): warning:  #223-D: function "SPI_Cmd" declared implicitly
+      SPI_Cmd( SPI_INTERFACE, ENABLE );	//使能SPI1
+..\Core\Src\spi.c(52): warning:  #223-D: function "SPI_I2S_SendData" declared implicitly
+      SPI_I2S_SendData( SPI_INTERFACE, outData );
+..\Core\Src\spi.c(55): warning:  #223-D: function "SPI_I2S_GetFlagStatus" declared implicitly
+      while( SPI_I2S_GetFlagStatus( SPI_INTERFACE, SPI_I2S_FLAG_RXNE ) == RESET );
+..\Core\Src\spi.c(55): error:  #20: identifier "SPI_I2S_FLAG_RXNE" is undefined
+      while( SPI_I2S_GetFlagStatus( SPI_INTERFACE, SPI_I2S_FLAG_RXNE ) == RESET );
+..\Core\Src\spi.c(58): warning:  #223-D: function "SPI_I2S_ReceiveData" declared implicitly
+      return SPI_I2S_ReceiveData( SPI_INTERFACE );
+..\Core\Src\spi.c: 8 warnings, 25 errors
+compiling ht7038.c...
+..\MYLib\sys\sys.h(61): error:  #20: identifier "u32" is undefined
+  void MSR_MSP(u32 addr);		//设置堆栈地址
+../Core/Inc/spi.h(26): warning:  #1-D: last line of file ends without a newline
+  #endif 
+..\Core\Src\ht7038.c(20): warning:  #223-D: function "RCC_APB2PeriphClockCmd" declared implicitly
+      RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOA|
+..\Core\Src\ht7038.c(20): error:  #20: identifier "RCC_APB2Periph_GPIOA" is undefined
+      RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOA|
+..\Core\Src\ht7038.c(21): error:  #20: identifier "RCC_APB2Periph_GPIOB" is undefined
+  							RCC_APB2Periph_GPIOB, ENABLE );
+..\Core\Src\ht7038.c(23): error:  #136: struct "<unnamed>"  has no field "GPIO_Pin"
+      GPIO_InitStructure.GPIO_Pin 	= GPIO_Pin_4;			//HT7038模块片选引脚
+..\Core\Src\ht7038.c(23): error:  #20: identifier "GPIO_Pin_4" is undefined
+      GPIO_InitStructure.GPIO_Pin 	= GPIO_Pin_4;			//HT7038模块片选引脚
+..\Core\Src\ht7038.c(24): error:  #136: struct "<unnamed>"  has no field "GPIO_Speed"
+      GPIO_InitStructure.GPIO_Speed 	= GPIO_Speed_50MHz;		//时速50MHz
+..\Core\Src\ht7038.c(24): error:  #20: identifier "GPIO_Speed_50MHz" is undefined
+      GPIO_InitStructure.GPIO_Speed 	= GPIO_Speed_50MHz;		//时速50MHz
+..\Core\Src\ht7038.c(25): error:  #136: struct "<unnamed>"  has no field "GPIO_Mode"
+      GPIO_InitStructure.GPIO_Mode  	= GPIO_Mode_Out_PP;		//推挽输出
+..\Core\Src\ht7038.c(25): error:  #20: identifier "GPIO_Mode_Out_PP" is undefined
+      GPIO_InitStructure.GPIO_Mode  	= GPIO_Mode_Out_PP;		//推挽输出
+..\Core\Src\ht7038.c(26): warning:  #223-D: function "GPIO_Init" declared implicitly
+      GPIO_Init( SPI_CS_PORT, &GPIO_InitStructure );			//根据指定参数初始化
+..\Core\Src\ht7038.c(27): warning:  #223-D: function "GPIO_SetBits" declared implicitly
+      GPIO_SetBits(SPI_CS_PORT,GPIO_Pin_4);
+..\Core\Src\ht7038.c(30): error:  #136: struct "<unnamed>"  has no field "GPIO_Pin"
+      GPIO_InitStructure.GPIO_Pin 	= GPIO_Pin_9;			//HT7038模块复位引脚
+..\Core\Src\ht7038.c(30): error:  #20: identifier "GPIO_Pin_9" is undefined
+      GPIO_InitStructure.GPIO_Pin 	= GPIO_Pin_9;			//HT7038模块复位引脚
+..\Core\Src\ht7038.c(63): warning:  #223-D: function "delay_ms" declared implicitly
+  	delay_ms(2); 				//等待100us  
+..\Core\Src\ht7038.c(121): warning:  #223-D: function "delay_us" declared implicitly
+  	delay_us(2);						//等待2us
+..\Core\Src\ht7038.c: 6 warnings, 11 errors
+compiling stm32f4xx_hal_tim_ex.c...
+compiling stm32f4xx_hal_tim.c...
+compiling stm32f4xx_hal_flash_ex.c...
+compiling stm32f4xx_hal_gpio.c...
+compiling stm32f4xx_hal_rcc.c...
+compiling stm32f4xx_hal_dma_ex.c...
+compiling stm32f4xx_hal_dma.c...
+compiling stm32f4xx_hal_pwr.c...
+compiling stm32f4xx_hal_pwr_ex.c...
+compiling stm32f4xx_hal_cortex.c...
+compiling stm32f4xx_hal.c...
+compiling sys.c...
+..\MYLib\sys\sys.h(61): error:  #20: identifier "u32" is undefined
+  void MSR_MSP(u32 addr);		//设置堆栈地址
+..\MYLib\sys\sys.c(28): error:  #20: identifier "u32" is undefined
+  __asm void MSR_MSP(u32 addr) 
+..\MYLib\sys\sys.c: 0 warnings, 2 errors
+compiling stm32f4xx_hal_exti.c...
+compiling system_stm32f4xx.c...
+compiling stm32f4xx_hal_uart.c...
+"ht7038\ht7038.axf" - 38 Error(s), 14 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.7.0.pack
+                ARM.CMSIS.5.7.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.4.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32F4xx_DFP.2.13.0.pack
+                Keil.STM32F4xx_DFP.2.13.0
+                STMicroelectronics STM32F4 Series Device Support, Drivers and Examples
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\_ht7038
+  C:\Users\Raymond_Meng\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include
+  C:\Users\Raymond_Meng\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.13.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.4.0
+Target not created.
+Build Time Elapsed:  00:00:27
+</pre>
+</body>
+</html>

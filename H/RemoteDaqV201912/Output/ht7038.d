@@ -1,0 +1,13 @@
+..\output\ht7038.o: ht7038.c
+..\output\ht7038.o: ht7038.h
+..\output\ht7038.o: ..\CMSIS\stm32f10x.h
+..\output\ht7038.o: ..\CMSIS\core_cm3.h
+..\output\ht7038.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\ht7038.o: ..\CMSIS\system_stm32f10x.h
+..\output\ht7038.o: ..\USER\stm32f10x_conf.h
+..\output\ht7038.o: ..\FWlib\inc\stm32f10x_gpio.h
+..\output\ht7038.o: ..\CMSIS\stm32f10x.h
+..\output\ht7038.o: ..\FWlib\inc\stm32f10x_rcc.h
+..\output\ht7038.o: ..\FWlib\inc\stm32f10x_tim.h
+..\output\ht7038.o: ..\FWlib\inc\stm32f10x_usart.h
+..\output\ht7038.o: ..\FWlib\inc\misc.h
