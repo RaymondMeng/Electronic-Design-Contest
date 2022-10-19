@@ -5,3 +5,4 @@
 #### 4.常用AI模型
 #### 5.2021年TI杯全国大学生电子设计竞赛H题工程 H/HAL_SPI
 · 硬件工程地址： https://oshwhub.com/ALEXHERZONG/ht7038
+#### 共同作者：张昕杰（https://github.com/dwdwdw5163）
